@@ -22,6 +22,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 	JTextField jtf;
 	JTabbedPane jtp;
 	JTextArea jta1, jta2, jta3;
+	String id;
 	
 	public MainFrame() {
 	

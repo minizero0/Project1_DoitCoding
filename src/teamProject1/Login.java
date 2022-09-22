@@ -25,6 +25,7 @@ public class Login extends JFrame{			//로그인 클래스
 	JLabel jl;
 	
 	public void confirm_login() {
+		CustomerVO cv = new CustomerVO();
 		String usrid = jtf_id.getText();
 		String usrpwd = jtf_pw.getText();
 		String sql = "select custid, custpwd from customer";
@@ -42,8 +43,10 @@ public class Login extends JFrame{			//로그인 클래스
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
-				if(rs.getString(1).equals(usrid) && rs.getString(2).equals(usrpwd)) 
+				if(rs.getString(1).equals(usrid) && rs.getString(2).equals(usrpwd)) {
 					login_Flag = true;
+					cv.setId(rs.getString(1)); 	//로그인된 아이디 세터
+				}
 			}
 			if(login_Flag) {
 				JOptionPane.showMessageDialog(null, "로그인에 성공했습니다"+usrid+"님");
