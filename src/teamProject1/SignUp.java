@@ -43,7 +43,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@192.168.0.110:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql); 
 			
@@ -75,7 +75,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.110:1521:XE", 
 					"c##project1", "project1");
 			Statement stmt = conn.createStatement();
 			
@@ -131,6 +131,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		JPanel jp5 = new JPanel();
 		jp5.add(new JLabel("(*)비밀번호: "));
 		jp5.add(jtf_pw);
+		jp5.add(btn_confirm_pwd);
 		
 		JPanel jp6 = new JPanel();
 		jp6.add(new JLabel("생년월일(6자리): "));
@@ -151,6 +152,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		add(btn);
 		
 		btn_confirm_id.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String custId = jtf_id.getText();
 				String regex = "^[a-z0-9]*$";			//아이디 적합성 판단 후 중복판단 메소드로 전달.
@@ -160,36 +162,37 @@ public class SignUp extends JFrame{			//회원가입 클래스
 					JOptionPane.showMessageDialog(null, "적합하지 않습니다. 소문자와 숫자를 조합해서 만들어주세요");
 			}
 		});
-		btn_confirm_pwd.addActionListener(new ActionListener() {
-			
+		
+		btn_confirm_pwd.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String custPwd = jtf_pw.getText();
 				String regex = "^[a-z0-9]*$";			//비밀번호 적합성 판단 소문자 숫자 만 사용가능.
 				if (Pattern.matches(regex, custPwd)) 		//소문자와 숫자만 들어있으면 true 반환 아니면 false
-					JOptionPane.showMessageDialog(null, "확인되었습니다.");
+					JOptionPane.showMessageDialog(null, "적합합니다.");
 				else
 					JOptionPane.showMessageDialog(null, "적합하지 않습니다. 소문자와 숫자를 조합해서 만들어주세요");
 			}
 		});
+		
 		btn_check.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addUsers();
 			}
 		});
+		
 		btn_cancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
-		});
-		
+		});		
 		
 		setSize(350,380);
 		setTitle("회원가입");
 		setVisible(true);
 		setLocationRelativeTo(null);  			//화면을 가운데에 배치
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	}
-	
-
+	}	
 }
