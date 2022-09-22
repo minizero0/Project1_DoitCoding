@@ -57,6 +57,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 			int re = pstmt.executeUpdate();
 			if(re == 1) {
 				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
+				dispose();
 			}else {
 				JOptionPane.showMessageDialog(null, "(*)표시부분은 필수입력사항입니다.");
 			}
@@ -80,17 +81,19 @@ public class SignUp extends JFrame{			//회원가입 클래스
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
-				if(rs.getString(1).equals(custid))
-					continue;
+				if(rs.getString(1).equals(custid)) {
+					signUp_Flag = false;
+					break;
+				}
 				else
 					signUp_Flag = true;
 			}
-				if(signUp_Flag)
-					JOptionPane.showMessageDialog(null, "사용가능한 아이디입니다.");
-				else
-					JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.");
-				conn.close();
-				stmt.close();
+			if(signUp_Flag)
+				JOptionPane.showMessageDialog(null, "사용가능한 아이디입니다.");
+			else
+				JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.");
+			conn.close();
+			stmt.close();
 			
 		}catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
