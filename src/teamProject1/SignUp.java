@@ -70,23 +70,27 @@ public class SignUp extends JFrame{			//회원가입 클래스
 	public void confirm_id() {
 		String custid = jtf_id.getText();
 		String sql = "select custid from customer";
+		boolean signUp_Flag = false;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			String url = "jdbc:oracle:thin:@192.168.0.120:1521:XE";
-			String usr = "c##madang";
-			String pwd = "madang";
-			
-			Connection conn = DriverManager.getConnection(url, usr, pwd);
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"c##project1", "project1");
 			Statement stmt = conn.createStatement();
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				if(rs.getString(1).equals(custid))
-					JOptionPane.showMessageDialog(null, "이미사용중인 아이디입니다. 다른 아이디를 입력해주세요");
+					continue;
 				else
-					JOptionPane.showMessageDialog(null, "사용가능한 아이디입니다.");
+					signUp_Flag = true;
 			}
+				if(signUp_Flag)
+					JOptionPane.showMessageDialog(null, "사용가능한 아이디입니다.");
+				else
+					JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.");
+				conn.close();
+				stmt.close();
 			
 		}catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
