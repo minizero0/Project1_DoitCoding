@@ -41,7 +41,7 @@ public class Login extends JFrame{          //로그인 클래스
             
             
             Connection conn = DriverManager.getConnection(
-                    "jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+                    "jdbc:oracle:thin:@172.30.1.3:1521:XE", 
                     "c##project1", "project1");
             PreparedStatement pstmt = conn.prepareStatement(sql);
             

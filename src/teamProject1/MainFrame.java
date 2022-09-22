@@ -88,6 +88,14 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 				JOptionPane.showMessageDialog(null, "권한이 없습니다.");
 			}
 		});
+		jcb.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(jcb.getSelectedIndex());
+				
+			}
+		});
 		
 	}
 	public static void main(String[] args) {

@@ -19,8 +19,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class BoardWrite extends JFrame{			//게시물 생성 클래스
-	String cate,title,content,custid,boarddate,img;
-	int price;
+	String title,content,custid,boarddate,img;
+	int price, cate;
 	JComboBox<String> jcb;
 	JLabel jl;
 	JTextField jtf_title;
@@ -28,27 +28,27 @@ public class BoardWrite extends JFrame{			//게시물 생성 클래스
 	JTextArea jtf_content;
 	JTextArea jtf_imageurl;
 	CustomerVO cv;
+	String usrid;
 	
 	public void board_write() {
-		
-		cate = jcb.getSelectedItem().toString();
+		cate = jcb.getSelectedIndex()+1;
 		title = jtf_title.getText();
 		price = Integer.parseInt(jtf_price.getText());  
 		img = jtf_imageurl.getText();
 		content = jtf_content.getText();
-		System.out.println(custid);
+		System.out.println(usrid);
 
 		String sql = "insert into product values(seq_proid.nextval,?,?,?,?,sysdate,?,?)";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, custid);
-			pstmt.setString(2, cate);
+			pstmt.setString(1, usrid);
+			pstmt.setInt(2, cate);
 			pstmt.setString(3, title);
 			pstmt.setInt(4, price);
 			pstmt.setString(5, img);
@@ -66,8 +66,8 @@ public class BoardWrite extends JFrame{			//게시물 생성 클래스
 	}
 	
 	
-	public BoardWrite() {
-		
+	public BoardWrite(String custid) {
+		usrid = custid;
 		
 		CategoryDAO cd = new CategoryDAO();
 		jcb = new JComboBox<String>(cd.listCate());
@@ -138,8 +138,5 @@ public class BoardWrite extends JFrame{			//게시물 생성 클래스
 			}
 		});
 		
-	}
-	public static void main(String[] args) {
-		new BoardWrite();
 	}
 }

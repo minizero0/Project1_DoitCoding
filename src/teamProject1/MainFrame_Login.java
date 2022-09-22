@@ -74,7 +74,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		
 		btn_write.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new BoardWrite();
+				new BoardWrite(custid);
 			}
 		});
 	}
