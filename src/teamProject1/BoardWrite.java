@@ -17,7 +17,7 @@ public class BoardWrite extends JFrame{			//게시물 생성 클래스
 	
 	public void board_write() {
 		CustomerVO cv = new CustomerVO();
-		String custid = cv.getId();
+		String custid = cv.getCustid();
 
 		String sql = "insert into product values(seq_proid.nextval,?,?,?,?,?,?,?)";
 		try {

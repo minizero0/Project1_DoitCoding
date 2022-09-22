@@ -25,6 +25,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 	String id;
 	
 	public MainFrame() {
+		CategoryDAO cd = new CategoryDAO();
 	
 		JButton btn_signUp = new JButton("회원가입");
 		JButton btn_login = new JButton("로그인");
@@ -43,8 +44,10 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		jtp.add("전자",jta3);
 		JScrollPane jsp = new JScrollPane(jtp);
 		
+		jcb = new JComboBox<String>(cd.listCate());
+		
 		JPanel jp1 = new JPanel();
-//		jp1.add(jcb);	콤보박스 
+		jp1.add(jcb);	
 		jp1.add(jtf);
 		jp1.add(btn_search);
 		jp1.add(btn_write);

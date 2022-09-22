@@ -45,7 +45,7 @@ public class Login extends JFrame{			//로그인 클래스
 			while(rs.next()) {
 				if(rs.getString(1).equals(usrid) && rs.getString(2).equals(usrpwd)) {
 					login_Flag = true;
-					cv.setId(rs.getString(1)); 	//로그인된 아이디 세터
+					cv.setCustid(rs.getString(1)); 	//로그인된 아이디 세터
 				}
 			}
 			if(login_Flag) {
