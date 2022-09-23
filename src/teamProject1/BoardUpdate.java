@@ -15,57 +15,17 @@ public class BoardUpdate extends JFrame{			//게시물 수정 클래스
 	String cate,title,content,custid,boarddate,img;
 	int price, proid;
 	
-	
-	public void board_update() {
-		
-		String sql = "update product set cate = ?, title = ?,... where proid = ? ";
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
-					"c##project1", "project1");
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, custid);
-			pstmt.setString(2, cate);
-			pstmt.setString(3, title);
-			pstmt.setInt(4, price);
-			pstmt.setString(5, boarddate);
-			pstmt.setString(6, img);
-			pstmt.setString(7, content);
-			int re = pstmt.executeUpdate();
-			if (re == 1) {
-				JOptionPane.showMessageDialog(null, "게시글 수정 완료!");
-				dispose();
-			}
-			conn.close();
-			pstmt.close();
-		}catch (Exception e) {
-			System.out.println("예외발생:"+e.getMessage());
-		}
-	}
+	ProductDAO pd = new ProductDAO();
+	ProductVO pv = new ProductVO();
 	
 	
-	public BoardUpdate() {
-		
+	public BoardUpdate(String login_custid) {
 		
 		JButton btn_update = new JButton("수정하기");
-		add(btn_update);
-		btn_update.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(confirm_id(custid))
-					board_update();
-				
-			}
-		});
 		
-		setSize(300,400);
-		setVisible(true);
-		setLocationRelativeTo(null);  			//화면을 가운데에 배치
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+		if(pd.confirm_id(login_custid))
+			pd.board_update(login_custid);
+		else
+			JOptionPane.showMessageDialog(null, "삭제할 권한이 없습니다");
 	}
 }
