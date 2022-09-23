@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,11 +13,12 @@ import javax.swing.JOptionPane;
 
 public class BoardUpdate extends JFrame{			//게시물 수정 클래스
 	String cate,title,content,custid,boarddate,img;
-	int price;
+	int price, proid;
 	
-	public void board_write() {
+	
+	public void board_update() {
 		
-		String sql = "update product set cate = ?, title = ?, ";
+		String sql = "update product set cate = ?, title = ?,... where proid = ? ";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
@@ -54,7 +56,8 @@ public class BoardUpdate extends JFrame{			//게시물 수정 클래스
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				if(confirm_id(custid))
+					board_update();
 				
 			}
 		});
