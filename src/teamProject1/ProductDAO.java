@@ -13,7 +13,7 @@ public class ProductDAO {
 	int price, cate;
 	
 	
-	public boolean confirm_id(String login_custid) { 		//로그인한 사용자 아이디와 게시물을 작성한 사용자 아이디를 확인
+	public boolean confirm_id(String login_custid, int board_proid) { 		//로그인한 사용자 아이디와 게시물을 작성한 사용자 아이디를 확인
 		boolean check_login = false;						
 		String sql = "select custid from customer where proid = ?";
 		try {
@@ -23,7 +23,7 @@ public class ProductDAO {
 					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, proid);
+			pstmt.setInt(1, board_proid);
 			
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -71,7 +71,7 @@ public class ProductDAO {
 		}
 	}
 	
-	public void board_delete(String login_custid) {					//게시물 삭제
+	public void board_delete(int board_proid) {					//게시물 삭제
 		String sql = "delete product where proid = ?";
 		
 		try {
@@ -81,7 +81,7 @@ public class ProductDAO {
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
-//			pstmt.setInt(1, proid);
+			pstmt.setInt(1, board_proid);
 			
 			int re = pstmt.executeUpdate();
 			if (re > 0) {
@@ -119,7 +119,7 @@ public class ProductDAO {
 	public void board_select() {						//게시물 조회 
 		String sql = "select * product";
 		try {
-Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 

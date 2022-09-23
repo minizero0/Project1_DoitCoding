@@ -23,7 +23,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 	JComboBox<String> jcb;
 	CategoryDAO cd = new CategoryDAO();
 
-	public MainFrame_Login(String custid) {
+	public MainFrame_Login(String login_custid) {
 		JButton btn_logout = new JButton("로그아웃");
 		JButton btn_search = new JButton("검색");
 		JButton btn_write = new JButton("글쓰기");
@@ -51,7 +51,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		jp1.add(btn_list);
 		
 		JPanel jp2 = new JPanel();
-		jp2.add(new JLabel(custid + " 님, 환영합니다.     "));
+		jp2.add(new JLabel(login_custid + " 님, 환영합니다.     "));
 		jp2.add(btn_logout);
 	
 		setLayout(new BorderLayout());
@@ -74,8 +74,10 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		
 		btn_write.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new BoardWrite(custid);
+				new BoardProduct().BoardWrite(login_custid);
 			}
 		});
+		
+		
 	}
 }

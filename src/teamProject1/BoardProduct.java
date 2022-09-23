@@ -17,43 +17,59 @@ import javax.swing.JTextField;
 public class BoardProduct extends JFrame{
 	String title,content,custid,boarddate,img;
 	int price, cate;
-	JComboBox<String> jcb;
+	CategoryDAO cd = new CategoryDAO();
+	JComboBox<String> jcb = new JComboBox<String>(cd.listCate());
 	JLabel jl;
 	JTextField jtf_title;
 	JTextField jtf_price;
 	JTextArea jtf_content;
 	JTextArea jtf_imageurl;
-	String usrid;
+	
 	
 	ProductDAO pd = new ProductDAO();
 	ProductVO pv = new ProductVO();
 	
-	
-	public void BoardDelete(String login_custid) {
-
-		if(pd.confirm_id(login_custid))
-			pd.board_delete(login_custid);
-		else
-			JOptionPane.showMessageDialog(null, "삭제할 권한이 없습니다");
+	public BoardProduct() {
+//		cate = jcb.getSelectedIndex()+1;
+//		title = jtf_title.getText();
+//		price = Integer.parseInt(jtf_price.getText());
+//		img = jtf_imageurl.getText();
+//		content = jtf_content.getText();
+//		
+//		pv.setCategoryid(cate);
+//		pv.setTitle(title);
+//		pv.setPrice(price);
+//		pv.setImg(img);
+//		pv.setContent(content);
 	}
 	
+	//게시물조회
+	public void BoardSelect() {					
+		pd.board_select();
+	}
 	
-	public void BoardUpdate(String login_custid) {
+	//게시물 삭제
+	public void BoardDelete(int board_proid) {  //String login_custid
+		pd.board_delete(board_proid);
+//		if(pd.confirm_id(login_custid))
+//			pd.board_delete(board_proid);
+//		else
+//			JOptionPane.showMessageDialog(null, "삭제할 권한이 없습니다");
+	}
+	
+	//게시물 업데이트
+	public void BoardUpdate(String login_custid, int board_proid) {
 		
-		if(pd.confirm_id(login_custid))
+		if(pd.confirm_id(login_custid, board_proid))
 			pd.board_update(login_custid);
 		else
 			JOptionPane.showMessageDialog(null, "삭제할 권한이 없습니다");
 	}
 	
-	
+	//게시물 작성
 	public void BoardWrite(String login_custid) {
 		pd = new ProductDAO();
 		
-		usrid = custid;
-		
-		CategoryDAO cd = new CategoryDAO();
-		jcb = new JComboBox<String>(cd.listCate());
 		jtf_title = new JTextField(40);
 		jtf_price = new JTextField(10);
 		jtf_content = new JTextArea();
@@ -115,19 +131,6 @@ public class BoardProduct extends JFrame{
 		setLocationRelativeTo(null);  			//화면을 가운데에 배치
 		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
 		
-		btn_register.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(pd.confirm_id(login_custid))
-					pd.board_update(login_custid);
-				else
-					JOptionPane.showMessageDialog(null, "삭제할 권한이 없습니다");
-			}
-		});
-		
 	}
-	
-	
-	
-	
 	
 }
