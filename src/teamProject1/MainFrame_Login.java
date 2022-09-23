@@ -79,5 +79,6 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		});
 		
 		
+		
 	}
 }
