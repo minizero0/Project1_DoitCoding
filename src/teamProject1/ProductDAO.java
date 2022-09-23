@@ -13,9 +13,9 @@ public class ProductDAO {
 	int price, cate;
 	
 	
-	public boolean confirm_id(String login_custid, int board_proid) { 		//로그인한 사용자 아이디와 게시물을 작성한 사용자 아이디를 확인
-		boolean check_login = false;						
-		String sql = "select custid from customer where proid = ?";
+	public boolean confirm_id(int board_proid,String login_custid) { 		//로그인한 사용자 아이디와 게시물을 작성한 사용자 아이디를 확인
+		boolean check_login = false;
+		String sql = "select custid from product where proid = ?";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
@@ -31,6 +31,7 @@ public class ProductDAO {
 			}
 			if(custid.equals(login_custid))
 				check_login = true;
+			
 			conn.close();
 			pstmt.close();
 			rs.close();
@@ -95,8 +96,8 @@ public class ProductDAO {
 		}
 	}
 	
-	public void board_update(String login_custid) {					//게시물 수정
-		String sql = "update product set categoryid = ?, title = ?,price = ?, img = ?, content = ?, where proid = ? ";
+	public void board_update(ProductVO vo) {					//게시물 수정
+		String sql = "update product set categoryid = ?, title = ?,price = ?, img = ?, content = ? where proid = ? ";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
@@ -104,6 +105,13 @@ public class ProductDAO {
 					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, vo.getCategoryid());
+			pstmt.setString(2, vo.getTitle());
+			pstmt.setInt(3, vo.getPrice());
+			pstmt.setString(4, vo.getImg());
+			pstmt.setString(5, vo.getContent());
+			pstmt.setInt(6, vo.getProid());
 			
 			int re = pstmt.executeUpdate();
 			if (re == 1) {
@@ -130,7 +138,8 @@ public class ProductDAO {
 			while(rs.next()) {
 				
 			}
-			
+			conn.close();
+			pstmt.close();
 		}catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
 		}

@@ -5,6 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,10 +23,43 @@ public class DetailPage extends JFrame {			//상세화면
 	JTextArea jta_title;
 	JTextArea jta_price;
 	JTextArea jta_content;
-	BoardProduct bp = new BoardProduct();;
+	BoardProduct bp = new BoardProduct();
+	ProductVO pv = new ProductVO();
 	
-	public DetailPage(){
+	public void getData(int board_proid) {
+		String sql = "select * from product where proid = ?";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			Connection conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+					"c##project1", "project1");
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_proid);
+			
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				pv.setProid(rs.getInt(1));
+				pv.setCustid(rs.getString(2));
+				pv.setCategoryid(rs.getInt(3));
+				pv.setTitle(rs.getString(4));
+				pv.setPrice(rs.getInt(5));
+				pv.setBoarddate(rs.getDate(6));
+				pv.setImg(rs.getString(7));
+				pv.setContent(rs.getString(8));
+			}			
+			conn.close();
+			pstmt.close();
+			
+		}catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		}
 		
+	}
+	
+	
+	public DetailPage(int board_proid, String login_custid){
+		getData(board_proid);
 		font1 = new Font("맑은 고딕", Font.BOLD,12);
 		JButton btn_cart = new JButton("장바구니 담기");
 		JButton btn_delete = new JButton("삭제");
@@ -40,7 +78,7 @@ public class DetailPage extends JFrame {			//상세화면
 		category.setFont(font1);
 		category.setBounds(30, 30, 67, 15);
 		jp1.add(category);
-		JLabel category_1 = new JLabel("카테고리명");  		   // 카테고리데이터 불러오기
+		JLabel category_1 = new JLabel(pv.getCategoryid()+"");  		   // 카테고리데이터 불러오기
 		category_1.setForeground(Color.blue);
 		category_1.setBounds(90, 31, 100, 15);
 		jp1.add(category_1);
@@ -49,7 +87,7 @@ public class DetailPage extends JFrame {			//상세화면
 		custid.setFont(font1);
 		custid.setBounds(190, 30, 67, 15);
 		jp1.add(custid);
-		JLabel custid_1 = new JLabel("코딩두잇");  		        // custid데이터 불러오기
+		JLabel custid_1 = new JLabel(pv.getCustid());  		        // custid데이터 불러오기
 		custid_1.setForeground(Color.blue);
 		custid_1.setBounds(250, 31, 100, 15);
 		jp1.add(custid_1);
@@ -58,7 +96,7 @@ public class DetailPage extends JFrame {			//상세화면
 		date.setFont(font1);
 		date.setBounds(190, 63, 67, 15);
 		jp1.add(date);
-		JLabel date_1 = new JLabel("2022년 9월 22일");     // 게시일데이터 불러오기
+		JLabel date_1 = new JLabel(pv.getBoarddate()+"");     // 게시일데이터 불러오기
 		date_1.setForeground(Color.blue);
 		date_1.setBounds(250, 64, 100, 15);
 		jp1.add(date_1);
@@ -67,7 +105,7 @@ public class DetailPage extends JFrame {			//상세화면
 		title.setFont(font1);
 		title.setBounds(190, 96, 67, 15);
 		jp1.add(title);
-		JLabel title_1 = new JLabel("제목 정보 불러오기"); 		// title데이터 불러오기
+		JLabel title_1 = new JLabel(pv.getTitle()); 		// title데이터 불러오기
 		title_1.setForeground(Color.blue);
 		title_1.setBounds(250,97,130,15); 
 		jp1.add(title_1);
@@ -76,7 +114,7 @@ public class DetailPage extends JFrame {			//상세화면
 		price.setBounds(190, 129, 67, 15);
 		price.setFont(font1);
 		jp1.add(price);
-		JLabel price_1 = new JLabel("(원)");						// price데이터 불러오기
+		JLabel price_1 = new JLabel(pv.getPrice() + "(원)");						// price데이터 불러오기
 		price_1.setForeground(Color.blue);
 		price_1.setBounds(250, 125, 90, 25);
 		jp1.add(price_1);
@@ -85,7 +123,7 @@ public class DetailPage extends JFrame {			//상세화면
 		content.setBounds(190, 162, 67, 15);
 		content.setFont(font1);
 		jp1.add(content);
-		JLabel content_1 = new JLabel("내용 불러오기");		// 내용데이터 불러오기
+		JLabel content_1 = new JLabel(pv.getContent());		// 내용데이터 불러오기
 		content_1.setForeground(Color.blue);
 		content_1.setBounds(190, 185, 180, 120);
 		jp1.add(content_1);
@@ -99,8 +137,15 @@ public class DetailPage extends JFrame {			//상세화면
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				bp.BoardDelete(17);
-				
+				bp.BoardDelete(board_proid, login_custid);
+			}
+		});
+		
+		btn_update.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				bp.BoardUpdate(board_proid, login_custid);
 			}
 		});
 		
@@ -113,8 +158,5 @@ public class DetailPage extends JFrame {			//상세화면
 		setVisible(true);
 		setLocationRelativeTo(null);  			//화면을 가운데에 배치
 		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
-	}
-	public static void main(String[] args) {
-	new DetailPage();
 	}
 }

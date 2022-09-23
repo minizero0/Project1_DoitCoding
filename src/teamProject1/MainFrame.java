@@ -31,7 +31,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 	JComboBox jcb;
 	JTable jta;
 	BoardProduct bp;
-	
+	String login_custid;
 	
 	public MainFrame() {
 		CategoryDAO cd = new CategoryDAO();
@@ -58,7 +58,6 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		colName.add("삭제");
 		
 		jta = new JTable(bp.get_item(), colName);
-		JScrollPane jsp = new JScrollPane(jta);
 		
 		jta.addMouseListener(new MouseListener() {
 			
@@ -66,8 +65,10 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 			public void mouseReleased(MouseEvent e) {
 				int row = jta.getSelectedRow();
 				Vector<String> v= (Vector<String>)bp.get_item().get(row);	
-				int proid = Integer.parseInt(v.get(0));
-				System.out.println(proid);
+				int board_proid = Integer.parseInt(v.get(0));
+				System.out.println(board_proid);
+				new DetailPage(board_proid, login_custid);
+				
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -89,10 +90,12 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
+		
+		JScrollPane jsp = new JScrollPane(jta);
+		
+		
 		
 		jtf = new JTextField(20);
 		jta1 = new JTextArea();

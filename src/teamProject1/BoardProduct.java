@@ -20,8 +20,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class BoardProduct extends JFrame{
-	String title,content,custid,boarddate,img;
-	int price, cate;
 	CategoryDAO cd = new CategoryDAO();
 	JComboBox<String> jcb = new JComboBox<String>(cd.listCate());
 	JLabel jl;
@@ -35,41 +33,107 @@ public class BoardProduct extends JFrame{
 	ProductDAO pd = new ProductDAO();
 	ProductVO pv = new ProductVO();
 	
-	public BoardProduct() {
-//		cate = jcb.getSelectedIndex()+1;
-//		title = jtf_title.getText();
-//		price = Integer.parseInt(jtf_price.getText());
-//		img = jtf_imageurl.getText();
-//		content = jtf_content.getText();
-//		
-//		pv.setCategoryid(cate);
-//		pv.setTitle(title);
-//		pv.setPrice(price);
-//		pv.setImg(img);
-//		pv.setContent(content);
-	}
-	
 	//게시물조회
 	public void BoardSelect() {					
 		pd.board_select();
 	}
 	
 	//게시물 삭제
-	public void BoardDelete(int board_proid) {  //String login_custid
-		pd.board_delete(board_proid);
-//		if(pd.confirm_id(login_custid))
-//			pd.board_delete(board_proid);
-//		else
-//			JOptionPane.showMessageDialog(null, "삭제할 권한이 없습니다");
+	public void BoardDelete(int board_proid, String login_custid) {  //String login_custid
+//		pd.board_delete(board_proid);
+		System.out.println(board_proid);
+		if(pd.confirm_id(board_proid, login_custid)) {
+			pd.board_delete(board_proid);
+			dispose();
+		}
+		else
+			JOptionPane.showMessageDialog(null, "삭제할 권한이 없습니다");
 	}
 	
 	//게시물 업데이트
-	public void BoardUpdate(String login_custid, int board_proid) {
+	public void BoardUpdate(int board_proid, String login_custid) {
 		
-		if(pd.confirm_id(login_custid, board_proid))
-			pd.board_update(login_custid);
-		else
-			JOptionPane.showMessageDialog(null, "삭제할 권한이 없습니다");
+		jtf_title = new JTextField(40);
+		jtf_price = new JTextField(10);
+		jtf_content = new JTextArea();
+		jtf_imageurl = new JTextArea();
+		JButton btn_update = new JButton("글수정");
+		
+		
+		JPanel jp1 = new JPanel();
+		jl = new JLabel("   상품에 대한 정보를 작성하세요.");
+		jp1.add(jcb);
+		jp1.add(jl);
+		
+		JPanel jp2 = new JPanel();
+		jp2.setLayout(null);
+				
+		JLabel title = new JLabel("제목: ");
+		title.setBounds(20, 30, 67, 15);
+		jp2.add(title);
+		jtf_title.setBounds(70, 26, 150, 25);
+		jp2.add(jtf_title);
+		
+		JLabel price = new JLabel("가격: ");
+		price.setBounds(20, 65, 67, 15);
+		jp2.add(price);
+		jtf_price.setBounds(70, 61, 90, 25);
+		jp2.add(jtf_price);
+		JLabel price_won = new JLabel("(원) ");
+		price_won.setBounds(170, 65, 67, 15);
+		jp2.add(price_won);		
+		
+		JLabel imageurl = new JLabel("이미지주소: ");
+		imageurl.setBounds(20, 58, 100, 100);
+		jp2.add(imageurl);	
+		JScrollPane jsp2 = new JScrollPane(jtf_imageurl);
+		jsp2.setBounds(100, 98, 250, 35);
+		jp2.add(jsp2);
+				
+		JLabel content = new JLabel("내용: ");
+		content.setBounds(20, 140, 67, 15);
+		jp2.add(content);	
+		JScrollPane jsp = new JScrollPane(jtf_content);
+		jsp.setBounds(70, 140, 285, 140);
+		jp2.add(jsp);
+			
+		JPanel jp3 = new JPanel();
+		jp3.add(btn_update);
+		
+		
+		
+		if(pd.confirm_id(board_proid, login_custid)) {
+			setVisible(true);
+			btn_update.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					pv.setCategoryid(jcb.getSelectedIndex()+1);  
+					pv.setTitle(jtf_title.getText()); 
+					pv.setPrice(Integer.parseInt(jtf_price.getText())); 
+					pv.setImg(jtf_imageurl.getText()); 
+					pv.setContent(jtf_content.getText()); 
+					pv.setCustid(login_custid);
+					pv.setProid(board_proid);
+					pd.board_update(pv);
+				}
+			});
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "수정할 권한이 없습니다");
+			setVisible(false);
+		}
+		
+				
+		setLayout(new BorderLayout());
+		add(jp1, BorderLayout.NORTH);
+		add(jp2, BorderLayout.CENTER);
+		add(jp3, BorderLayout.SOUTH);
+		
+		setSize(400,400);
+		setTitle("글 수정페이지");
+		setLocationRelativeTo(null);  			//화면을 가운데에 배치
+		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
+		
 	}
 	
 	//게시물 작성

@@ -1,0 +1,1 @@
+insert into product values(4,'dudals1069',3,'device',12,sysdate,'hu','def');
