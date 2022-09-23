@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -27,7 +28,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		JButton btn_logout = new JButton("로그아웃");
 		JButton btn_search = new JButton("검색");
 		JButton btn_write = new JButton("글쓰기");
-		JButton btn_list = new JButton("장바구니");		
+		JButton btn_list = new JButton("장바구니");
 		
 		jcb = new JComboBox<String>(cd.listCate());
 		
@@ -77,8 +78,6 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 				new BoardProduct().BoardWrite(login_custid);
 			}
 		});
-		
-		
 		
 	}
 }

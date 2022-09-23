@@ -3,6 +3,11 @@ package teamProject1;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,6 +29,7 @@ public class BoardProduct extends JFrame{
 	JTextField jtf_price;
 	JTextArea jtf_content;
 	JTextArea jtf_imageurl;
+	Vector<Vector<String>> vector = new Vector<>();
 	
 	
 	ProductDAO pd = new ProductDAO();
@@ -131,6 +137,41 @@ public class BoardProduct extends JFrame{
 		setLocationRelativeTo(null);  			//화면을 가운데에 배치
 		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
 		
+	}
+	
+	public Vector get_item() {
+		String sql = "select * from product order by proid";
+		
+		try {
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				
+				Connection conn = DriverManager.getConnection(
+						"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+						"c##project1", "project1");
+				Statement stmt = conn.createStatement();
+				
+				ResultSet rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					Vector<String> vc = new Vector<>();
+					vc.add(rs.getInt(1)+"");
+					vc.add(rs.getString(2));
+					vc.add(rs.getInt(3)+"");
+					vc.add(rs.getString(4));
+					vc.add(rs.getInt(5)+"");
+					vc.add(rs.getDate(6)+"");
+					vc.add(rs.getString(7));
+					vc.add(rs.getString(8));
+					vector.add(vc);
+				}
+				conn.close();
+				rs.close();
+				
+			
+			
+		}catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		}
+		return vector;
 	}
 	
 }
