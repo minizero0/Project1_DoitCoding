@@ -43,7 +43,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.86:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql); 
 			
@@ -75,7 +75,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@172.30.1.86:1521:XE", 
 					"c##project1", "project1");
 			Statement stmt = conn.createStatement();
 			

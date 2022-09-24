@@ -96,8 +96,6 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		});
 		
 		
-		
-		
 		JPanel jp1 = new JPanel();
 		jp1.add(jtf);
 		jp1.add(jcb);
