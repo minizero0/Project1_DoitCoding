@@ -25,3 +25,5 @@
        *수정
        *검색
 
+## 상세화면 설계
+![image](https://user-images.githubusercontent.com/49307938/192099905-babfeb96-e2e7-4f19-a7cb-2a9d83f122b1.png)
