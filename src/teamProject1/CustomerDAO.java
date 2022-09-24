@@ -128,7 +128,6 @@ public boolean addUsers(CustomerVO CustomerVO) {
             if(login_Flag==true) {
                 JOptionPane.showMessageDialog(null, "로그인에 성공했습니다"+custid+"님");
             }                   
-            
             else
                 JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 옳바르지 않습니다.");
             conn.close();
