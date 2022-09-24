@@ -25,6 +25,6 @@
        *수정
        *검색
 
-## 상세화면 설계
+## DB 설계
 
 <img src="https://user-images.githubusercontent.com/49307938/192099905-babfeb96-e2e7-4f19-a7cb-2a9d83f122b1.png" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
