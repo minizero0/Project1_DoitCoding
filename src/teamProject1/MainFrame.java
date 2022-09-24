@@ -22,23 +22,24 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
-	JTextField jtf;
+	JTextField jtf_search;
 	JTabbedPane jtp;
 	JTextArea jta1, jta2, jta3;
 	MainFrame f;
 	JComboBox jcb;
 	JTable jta;
-	BoardProduct bp;
 	String login_custid;
 	
 	public MainFrame() {
-		CategoryDAO cd = new CategoryDAO();
+		CategoryDAO CategoryDAO = new CategoryDAO();
+		CategoryVO CategoryVO = new CategoryVO();
+		ProductDAO ProductDAO = new ProductDAO();
 		f = this;
-		bp = new BoardProduct();
 		
-		jcb = new JComboBox<String>(cd.listCate());
+		jcb = new JComboBox<String>(CategoryDAO.listCate());
 	
 		JButton btn_signUp = new JButton("회원가입");
 		JButton btn_login = new JButton("로그인");
@@ -47,24 +48,23 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		//JButton btn_list = new JButton("장바구니");	   장바구니 JButton 숨기기	
 		
 		Vector<String> colName = new Vector<>();
+		
 		colName.add("proid");
 		colName.add("custid");
-		colName.add("categoryid");
+		colName.add("categoryname");
 		colName.add("title");
 		colName.add("price");
 		colName.add("date");
 		colName.add("img");
 		colName.add("content");
-		colName.add("삭제");
-		
-		jta = new JTable(bp.get_item(), colName);
+		jta = new JTable(ProductDAO.get_item(), colName);
 		
 		jta.addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				int row = jta.getSelectedRow();
-				Vector<String> v= (Vector<String>)bp.get_item().get(row);	
+				Vector<String> v= (Vector<String>)ProductDAO.get_item().get(row);	
 				int board_proid = Integer.parseInt(v.get(0));
 				System.out.println(board_proid);
 				new DetailPage(board_proid, login_custid);
@@ -97,7 +97,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		
 		
 		
-		jtf = new JTextField(20);
+		jtf_search = new JTextField(20);
 		jta1 = new JTextArea();
 		jta2 = new JTextArea();
 		jta3 = new JTextArea();
@@ -111,7 +111,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		
 		
 		JPanel jp1 = new JPanel();
-		jp1.add(jtf);
+		jp1.add(jtf_search);
 		jp1.add(jcb);
 		jp1.add(btn_search);
 		jp1.add(btn_write);
@@ -153,6 +153,17 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 			}
 		});
 		
+		btn_search.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String search_name = jtf_search.getText();
+				String item = jcb.getSelectedItem().toString();
+				CategoryVO.setCategoryname(item);
+				ProductDAO.Search_keyword_MainFrame(CategoryVO, search_name);
+				jta.updateUI();
+			}
+		});
 	}
 	public static void main(String[] args) {
 		new MainFrame();

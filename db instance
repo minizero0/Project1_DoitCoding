@@ -1,1 +1,22 @@
 insert into product values(4,'dudals1069',3,'device',12,sysdate,'hu','def');
+
+
+select custid, categoryname from product p, category c where p.categoryid = c.categoryid and 
+categoryname = 'book' and title like 'nike'; 카테고리 id로 이름가져오기
+
+//ex 
+select custid, p.categoryid,categoryname, title from product p, category c 
+where p.categoryid = c.categoryid and 
+categoryname = 'book' and 
+title like '%nike%';
+
+
+
+
+"select proid, custid, categoryname, title, price, boarddate, img, content "
+				+ "from product p, category c "
+				+ "where p.categoryid = c.categoryid and categoryname = ? and title like ?";
+				
+				
+				
+select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c where p.categoryid = c.categoryid and categoryname = 'book' and title like '%nike%';

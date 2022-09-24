@@ -18,15 +18,18 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메인 프레임
-	JTextField jtf;
+	JTextField jtf_search;
 	JTabbedPane jtp;
 	JTextArea jta1;
 	JTextArea jta2;
 	JTextArea jta3;
 	JComboBox<String> jcb;
 	CategoryDAO cd = new CategoryDAO();
+	CategoryVO CategoryVO = new CategoryVO();
 	BoardProduct bp = new BoardProduct();
+	ProductDAO ProductDAO = new ProductDAO();
 	JTable jta;
+	
 
 	public MainFrame_Login(String login_custid) {
 		JButton btn_logout = new JButton("로그아웃");
@@ -36,7 +39,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		
 		jcb = new JComboBox<String>(cd.listCate());
 		
-		jtf = new JTextField(20);
+		jtf_search = new JTextField(20);
 		
 		jta1 = new JTextArea();
 		jta2 = new JTextArea();
@@ -51,16 +54,14 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		Vector<String> colName = new Vector<>();
 		colName.add("proid");
 		colName.add("custid");
-		colName.add("categoryid");
+		colName.add("categoryname");
 		colName.add("title");
 		colName.add("price");
 		colName.add("date");
 		colName.add("img");
 		colName.add("content");
-		colName.add("삭제");
 		
-		
-		jta = new JTable(bp.get_item(), colName);
+		jta = new JTable(ProductDAO.get_item(), colName);
 		JScrollPane jsp = new JScrollPane(jta);
 		
 		jta.addMouseListener(new MouseListener() {
@@ -68,7 +69,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				int row = jta.getSelectedRow();
-				Vector<String> v= (Vector<String>)bp.get_item().get(row);	
+				Vector<String> v= (Vector<String>)ProductDAO.get_item().get(row);	
 				int board_proid = Integer.parseInt(v.get(0));
 				new DetailPage(board_proid, login_custid);
 			}
@@ -97,7 +98,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		
 		
 		JPanel jp1 = new JPanel();
-		jp1.add(jtf);
+		jp1.add(jtf_search);
 		jp1.add(jcb);
 		jp1.add(btn_search);
 		jp1.add(btn_write);
@@ -131,5 +132,16 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 			}
 		});
 		
+		btn_search.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String search_name = jtf_search.getText();
+				String item = jcb.getSelectedItem().toString();
+				CategoryVO.setCategoryname(item);
+				ProductDAO.Search_keyword_MainFrame(CategoryVO, search_name);
+				jta.updateUI();
+			}
+		});
 	}
 }

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -11,7 +13,7 @@ public class ProductDAO {
 	int proid;
 	String title,content,custid,boarddate,img;
 	int price, cate;
-	
+	Vector<Vector<String>> vector = new Vector<>();
 	
 	public boolean confirm_id(int board_proid,String login_custid) { 		//로그인한 사용자 아이디와 게시물을 작성한 사용자 아이디를 확인
 		boolean check_login = false;
@@ -51,7 +53,7 @@ public class ProductDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@172.30.1.86:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -78,7 +80,7 @@ public class ProductDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@172.30.1.86:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -102,7 +104,7 @@ public class ProductDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@172.30.1.86:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -130,7 +132,7 @@ public class ProductDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@172.30.1.86:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -143,6 +145,79 @@ public class ProductDAO {
 		}catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
 		}
+	}
+	
+	public Vector get_item() {
+		String sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
+				+ "where p.categoryid = c.categoryid order by proid";
+		
+		try {
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				
+				Connection conn = DriverManager.getConnection(
+						"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+						"c##project1", "project1");
+				Statement stmt = conn.createStatement();
+				
+				ResultSet rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					Vector<String> vc = new Vector<>();
+					vc.add(rs.getInt(1)+"");
+					vc.add(rs.getString(2));
+					vc.add(rs.getString(3));
+					vc.add(rs.getString(4));
+					vc.add(rs.getInt(5)+"");
+					vc.add(rs.getDate(6)+"");
+					vc.add(rs.getString(7));
+					vc.add(rs.getString(8));
+					vector.add(vc);
+				}
+				conn.close();
+				rs.close();
+			
+		}catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		}
+		return vector;
+	}
+	
+	
+	public void Search_keyword_MainFrame(CategoryVO cv, String search_name) { // 로그인 전 메인페이지
+		vector.clear();
+		
+		String categoryname = cv.getCategoryname();
+		String sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
+				+ "where p.categoryid = c.categoryid and categoryname = ? and title like ? order by proid";
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+					"c##project1", "project1");
+			PreparedStatement pstmt = conn.prepareStatement(sql); 
+			pstmt.setString(1, categoryname);
+			pstmt.setString(2, "%"+search_name+"%");
+			
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Vector<String> vc = new Vector<>();
+				vc.add(rs.getInt(1)+"");
+				vc.add(rs.getString(2));
+				vc.add(rs.getString(3));
+				vc.add(rs.getString(4));
+				vc.add(rs.getInt(5)+"");
+				vc.add(rs.getDate(6)+"");
+				vc.add(rs.getString(7));
+				vc.add(rs.getString(8));
+				vector.add(vc);
+			}
+			conn.close();
+			pstmt.close();
+			rs.close();
+			
+		}catch(Exception e) {
+			System.out.println("예외" + e.getMessage());
+			}	
 	}
 	
 	
