@@ -17,7 +17,7 @@ public class CustomerDAO {
 public boolean addUsers(CustomerVO CustomerVO) {
 
 	String sql = "insert into customer values(?,?,?,?,?,?)"; 
-		boolean flag_addUsers = false;
+	boolean flag_addUsers = false;
 		try {
 			String custid = CustomerVO.getCustid();
 			String custpwd = CustomerVO.getCustpwd();
@@ -59,41 +59,30 @@ public boolean addUsers(CustomerVO CustomerVO) {
 	}
 	
 	public void confirm_id(CustomerVO CustomerVO) {
-		String sql = "select custid from customer";
-		boolean signUp_Flag = false;
+		String sql = "select custid from customer where custid = ?";
+		boolean signUp_Flag = true;
 		try {
 			
 			String custid = CustomerVO.getCustid();
-			String custpwd = CustomerVO.getCustpwd();
-			String name = CustomerVO.getName();
-			String phone = CustomerVO.getPhone();
-			String addr = CustomerVO.getAddr();
-			String birth = CustomerVO.getBirth();
 			
 			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@172.30.1.86:1521:XE", 
+					"c##project1", "project1");
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
-			String url = "jdbc:oracle:thin:@172.30.1.86:1521:XE";
-			String usr = "c##project1";
-			String pwd = "project1";
+			pstmt.setString(1, custid);
+			ResultSet rs = pstmt.executeQuery();
 			
-			Connection conn = DriverManager.getConnection(url, usr, pwd);
-			Statement stmt = conn.createStatement();
-			
-			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
-                if(rs.getString(1).equals(custid)) {
-                    signUp_Flag = false;
-                    break;
-                }
-                else
-                    signUp_Flag = true;
+                signUp_Flag = false;
             }
             if(signUp_Flag)
                 JOptionPane.showMessageDialog(null, "사용가능한 아이디입니다.");
             else
                 JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.");
             conn.close();
-            stmt.close();
+            pstmt.close();
             
 		}catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
@@ -107,8 +96,7 @@ public boolean addUsers(CustomerVO CustomerVO) {
         String custid = CustomerVO.getCustid();
 		String custpwd = CustomerVO.getCustpwd();
 		
-		
-		String sql = "select custid, custpwd from customer";
+		String sql = "select custpwd from customer where custid = ?";
         
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -116,22 +104,23 @@ public boolean addUsers(CustomerVO CustomerVO) {
             Connection conn = DriverManager.getConnection(
                     "jdbc:oracle:thin:@172.30.1.86:1521:XE", 
                     "c##project1", "project1");
-            Statement stmt = conn.createStatement();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             
-            ResultSet rs = stmt.executeQuery(sql);
+            pstmt.setString(1, custid);
+            
+            ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
-            	
-                if(rs.getString(1).equals(custid) && rs.getString(2).equals(custpwd)) 
-                    {login_Flag = true;}
+                if(rs.getString(1).equals(custpwd)) 
+                    login_Flag = true;
             }
-            
-            if(login_Flag==true) {
+            if(login_Flag) {
                 JOptionPane.showMessageDialog(null, "로그인에 성공했습니다"+custid+"님");
-            }                   
+            }
             else
-                JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 옳바르지 않습니다.");
+            	JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 옳바르지 않습니다.");
+            
             conn.close();
-            stmt.close();
+            pstmt.close();
             rs.close();
         }catch (Exception e) {
             System.out.println("예외발생:"+e.getMessage());

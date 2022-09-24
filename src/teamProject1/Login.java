@@ -27,51 +27,8 @@ public class Login extends JFrame{          //로그인 클래스
     boolean login_Flag;
     String custid;
     
-    
-    
-    public boolean confirm_login() {
-        custid = jtf_id.getText();
-        String custpwd = jtf_pw.getText();
-        String sql = "select custpwd from customer where custid = ?";
-        
-        login_Flag = false;
-        
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            
-            
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:oracle:thin:@172.30.1.86:1521:XE", 
-                    "c##project1", "project1");
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            
-            pstmt.setString(1, custid);
-            
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
-                if(rs.getString(1).equals(custpwd)) 
-                    login_Flag = true;
-            }
-            if(login_Flag) {
-                JOptionPane.showMessageDialog(null, "로그인에 성공했습니다"+custid+"님");
-                dispose();
-                 
-            }
-                                   // 반면 dispose()는 현재 프레임만 종료시킨다.
-            else
-                JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 옳바르지 않습니다.");
-
-            conn.close();
-            pstmt.close();
-            rs.close();
-            
-
-        }catch (Exception e) {
-            System.out.println("예외발생:"+e.getMessage());
-        }
-        return login_Flag;  // system.exit()는 모든 프레임 즉,프로그램을 종료시킨다
-        
-    }
+    CustomerDAO cd = new CustomerDAO();
+    CustomerVO cv = new CustomerVO();
     
     public Login(MainFrame f) {
     	mainframe = f;
@@ -98,14 +55,18 @@ public class Login extends JFrame{          //로그인 클래스
         
         btn_login.addActionListener(new ActionListener() {          //로그인 버튼
             public void actionPerformed(ActionEvent e) {
-                if (confirm_login()) {
+            	String custid = jtf_id.getText();
+                String custpwd = jtf_pw.getText();
+                
+            	cv.setCustid(custid);
+                cv.setCustpwd(custpwd);
+            	
+                if (cd.confirm_login(cv)) {
 	                mainframe.setVisible(false);
 	                JOptionPane.showMessageDialog(null, "접속하였습니다.");
 	                dispose();
 	                new MainFrame_Login(custid);
                 }
-                else
-                	JOptionPane.showMessageDialog(null, "error");
             }
         });
         btn_singUp.addActionListener(new ActionListener() {         //회원가입 버튼
