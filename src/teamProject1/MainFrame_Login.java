@@ -36,6 +36,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		JButton btn_search = new JButton("검색");
 		JButton btn_write = new JButton("글쓰기");
 		JButton btn_cart = new JButton("장바구니");
+		JButton btn_new = new JButton("새로고침");
 		
 		jcb = new JComboBox<String>(cd.listCate());
 		
@@ -107,6 +108,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		JPanel jp2 = new JPanel();
 		jp2.add(new JLabel(login_custid + " 님, 환영합니다.     "));
 		jp2.add(btn_logout);
+		jp2.add(btn_new);
 	
 		setLayout(new BorderLayout());
 		add(jp1, BorderLayout.NORTH);
@@ -129,7 +131,6 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		btn_write.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new BoardProduct().BoardWrite(login_custid);
-				jta.updateUI();
 			}
 		});
 		
@@ -149,8 +150,16 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Cart cart = new Cart(login_custid);
-				cart.listInfo(login_custid);
+				new Cart(login_custid);
+			}
+		});
+		
+		btn_new.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ProductDAO.get_item();
+				jta.updateUI();
 			}
 		});
 	}

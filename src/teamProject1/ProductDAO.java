@@ -147,6 +147,7 @@ public class ProductDAO {
 	}
 	
 	public Vector get_item() {
+		vector.clear();
 		String sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
 				+ "where p.categoryid = c.categoryid order by proid";
 		

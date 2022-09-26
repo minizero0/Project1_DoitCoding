@@ -33,17 +33,13 @@ public class BoardProduct extends JFrame{
 	ProductDAO pd = new ProductDAO();
 	ProductVO pv = new ProductVO();
 	
-	//게시물조회
-	public void BoardSelect() {					
-		pd.board_select();
-	}
-	
 	//게시물 삭제
 	public void BoardDelete(int board_proid, String login_custid) {  //String login_custid
 //		pd.board_delete(board_proid);
 		System.out.println(board_proid);
 		if(pd.confirm_id(board_proid, login_custid)) {
 			pd.board_delete(board_proid);
+			pd.get_item();
 			dispose();
 		}
 		else
@@ -115,6 +111,7 @@ public class BoardProduct extends JFrame{
 					pv.setCustid(login_custid);
 					pv.setProid(board_proid);
 					pd.board_update(pv);
+					pd.get_item();
 				}
 			});
 		}
@@ -197,6 +194,8 @@ public class BoardProduct extends JFrame{
 				pv.setImg(jtf_imageurl.getText()); 
 				pv.setContent(jtf_content.getText()); 
 				pd.board_write(pv);
+				pd.get_item();
+				
 				dispose();
 			}
 		});

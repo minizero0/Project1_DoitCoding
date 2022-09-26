@@ -14,6 +14,7 @@ import java.sql.Statement;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
@@ -25,6 +26,7 @@ public class DetailPage extends JFrame {			//상세화면
 	JTextArea jta_content;
 	BoardProduct bp = new BoardProduct();
 	ProductVO pv = new ProductVO();
+	CartDAO CartDAO = new CartDAO();
 	
 	public void getData(int board_proid) {
 		String sql = "select * from product where proid = ?";
@@ -138,6 +140,7 @@ public class DetailPage extends JFrame {			//상세화면
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				bp.BoardDelete(board_proid, login_custid);
+				dispose();
 			}
 		});
 		
@@ -153,8 +156,16 @@ public class DetailPage extends JFrame {			//상세화면
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Cart cart = new Cart(login_custid);
-				cart.cart_insert(login_custid, board_proid);
+				if(login_custid == null)
+					JOptionPane.showMessageDialog(null, "로그인부터 해주세요");
+				else {
+					if(CartDAO.confirm_cart(login_custid, board_proid))
+						CartDAO.cart_insert(login_custid, board_proid);
+					else
+						JOptionPane.showMessageDialog(null, "이미 장바구니에 담긴 상품입니다.");
+				}
+					
+					
 				
 			}
 		});

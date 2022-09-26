@@ -28,3 +28,5 @@ insert into cart values(seq_cartid.NEXTVAL);
 
 
 select cartid from customer c, product p, cart a where c.custid = a.custid and p.proid = a.proid and c.custid = 'dudals1069' and p.proid = 2;
+
+select cartid from customer c, product p, cart a where c.custid = a.custid and p.proid = a.proid;
