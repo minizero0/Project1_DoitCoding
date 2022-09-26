@@ -137,7 +137,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 	
 		btn_login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Login(f);	
+				new Login(f);
 			}
 		});
 		

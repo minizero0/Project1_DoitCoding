@@ -30,9 +30,10 @@ public class SignUp extends JFrame{			//회원가입 클래스
 	
 	CustomerVO cv = new CustomerVO();
 	CustomerDAO cd = new CustomerDAO();
+	boolean id_Flag, pw_Flag;			//아이디 적합성, 비밀번호 적합성 확인.
 	
 	public SignUp() {
-			
+
 		setLayout(new GridLayout(8,2));
 		comment = new JLabel("                              *** 정보를 입력하세요 ***");
 		jtf_name = new JTextField(10);
@@ -82,15 +83,19 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		add(jp6);
 		add(btn);
 		
+		
+		
 		btn_confirm_id.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				id_Flag = false;
 				String custId = jtf_id.getText();
 				String regex = "^[a-z0-9]*$";			//아이디 적합성 판단 후 중복판단 메소드로 전달.
 				
 				if (Pattern.matches(regex, custId)) {		//소문자와 숫자만 들어있으면 true 반환 아니면 false
 					cv.setCustid(custId);
 					cd.confirm_id(cv);
+					id_Flag = true;
 				}
 				else
 					JOptionPane.showMessageDialog(null, "적합하지 않습니다. 소문자와 숫자를 조합해서 만들어주세요");
@@ -100,10 +105,13 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		btn_confirm_pwd.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				pw_Flag = false;
 				String custPwd = jtf_pw.getText();
 				String regex = "^[a-z0-9]*$";			//비밀번호 적합성 판단 소문자 숫자 만 사용가능.
-				if (Pattern.matches(regex, custPwd)) 		//소문자와 숫자만 들어있으면 true 반환 아니면 false
+				if (Pattern.matches(regex, custPwd)) {		//소문자와 숫자만 들어있으면 true 반환 아니면 false
 					JOptionPane.showMessageDialog(null, "적합합니다.");
+					pw_Flag = true;
+				}
 				else
 					JOptionPane.showMessageDialog(null, "적합하지 않습니다. 소문자와 숫자를 조합해서 만들어주세요");
 			}
@@ -112,6 +120,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		btn_signup.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (id_Flag && pw_Flag) {
 				String custid = jtf_id.getText();
                 String custpwd = jtf_pw.getText();
                 String name = jtf_name.getText();
@@ -128,6 +137,13 @@ public class SignUp extends JFrame{			//회원가입 클래스
 				
             	if(cd.addUsers(cv))
             		dispose();
+				}
+				else {
+					if (!id_Flag)
+						JOptionPane.showMessageDialog(null, "아이디 중복성을 확인해주세요.");
+					else if(!pw_Flag)
+						JOptionPane.showMessageDialog(null, "비밀번호 적합성을 확인해주세요.");
+				}
 			}
 		});
 		
