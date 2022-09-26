@@ -187,9 +187,9 @@ public class ProductDAO {
 		
 		String categoryname = cv.getCategoryname();
 		String sql;
-		System.out.println(categoryname);
 		if(categoryname.equals("all")) {
-			sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c where p.categoryid = c.categoryid";
+			sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
+					+ "where p.categoryid = c.categoryid and title like ? order by proid";
 		}
 		else {
 			sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
@@ -204,7 +204,10 @@ public class ProductDAO {
 					"c##project1", "project1");
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			if(!categoryname.equals("all")) {
+			if(categoryname.equals("all")) {
+				pstmt.setString(1, "%"+search_name+"%");
+			}
+			else {
 				pstmt.setString(1, categoryname);
 				pstmt.setString(2, "%"+search_name+"%");
 			}

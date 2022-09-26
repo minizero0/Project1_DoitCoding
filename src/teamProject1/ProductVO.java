@@ -9,9 +9,10 @@ public class ProductVO {
 	Date boarddate;
 	String img;
 	String content;
+	String categoryname;
 	
 	public ProductVO(int proid, String custid, int categoryid, String title, int price, Date boarddate, String img,
-			String content) {
+			String content, String categoryname) {
 		super();
 		this.proid = proid;
 		this.custid = custid;
@@ -21,6 +22,7 @@ public class ProductVO {
 		this.boarddate = boarddate;
 		this.img = img;
 		this.content = content;
+		this.categoryname = categoryname;
 	}
 	public ProductVO() {
 		super();
@@ -73,6 +75,13 @@ public class ProductVO {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	public String getCategoryname() {
+		return categoryname;
+	}
+	public void setCategoryname(String categoryname) {
+		this.categoryname = categoryname;
 	}
 	
 }

@@ -22,7 +22,6 @@ public class Cart extends JFrame {				//장바구니 클래스
 	public Cart(String login_custid) {                         //메인 페이지에서 장바구니 버튼 클릭하면 보이는 화면
 		Vector<String> colNames = new Vector<String>();
 		colNames.add("게시물번호");
-		colNames.add("장바구니번호");
 		colNames.add("카테고리");
 		colNames.add("상품명");
 		colNames.add("가격");
@@ -37,10 +36,11 @@ public class Cart extends JFrame {				//장바구니 클래스
 			public void mouseReleased(MouseEvent e) {
 				int row = table.getSelectedRow();
 				Vector<String> v= (Vector<String>)CartDAO.listInfo(login_custid).get(row);	
-				int cartid = Integer.parseInt(v.get(1));
+				int proid = Integer.parseInt(v.get(0));
+				String custid = v.get(5);
 				int re = JOptionPane.showConfirmDialog(null, "장바구니에서 삭제하시겠습니까?");
 				if (re == 0) {
-					CartDAO.cart_delete(cartid);
+					CartDAO.cart_delete(custid, proid);
 					CartDAO.listInfo(login_custid);
 					table.updateUI();
 				}

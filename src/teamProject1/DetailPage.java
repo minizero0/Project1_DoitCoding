@@ -29,7 +29,8 @@ public class DetailPage extends JFrame {			//상세화면
 	CartDAO CartDAO = new CartDAO();
 	
 	public void getData(int board_proid) {
-		String sql = "select * from product where proid = ?";
+		String sql = "select proid, custid, p.categoryid, title, price, boarddate, img, content, categoryname from product p, category c "
+				+ "where p.categoryid = c.categoryid and proid = ?";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
@@ -49,6 +50,7 @@ public class DetailPage extends JFrame {			//상세화면
 				pv.setBoarddate(rs.getDate(6));
 				pv.setImg(rs.getString(7));
 				pv.setContent(rs.getString(8));
+				pv.setCategoryname(rs.getString(9));
 			}			
 			conn.close();
 			pstmt.close();
@@ -56,7 +58,6 @@ public class DetailPage extends JFrame {			//상세화면
 		}catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
 		}
-		
 	}
 	
 	
@@ -80,7 +81,7 @@ public class DetailPage extends JFrame {			//상세화면
 		category.setFont(font1);
 		category.setBounds(30, 30, 67, 15);
 		jp1.add(category);
-		JLabel category_1 = new JLabel(pv.getCategoryid()+"");  		   // 카테고리데이터 불러오기
+		JLabel category_1 = new JLabel(pv.getCategoryname());  		   // 카테고리데이터 불러오기
 		category_1.setForeground(Color.blue);
 		category_1.setBounds(90, 31, 100, 15);
 		jp1.add(category_1);
