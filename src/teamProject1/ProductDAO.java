@@ -204,13 +204,10 @@ public class ProductDAO {
 					"c##project1", "project1");
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			if(categoryname.equals("all"))
-				System.out.println("a");
-			else {
+			if(!categoryname.equals("all")) {
 				pstmt.setString(1, categoryname);
 				pstmt.setString(2, "%"+search_name+"%");
 			}
-			
 			
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
