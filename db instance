@@ -20,3 +20,11 @@ title like '%nike%';
 				
 				
 select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c where p.categoryid = c.categoryid and categoryname = 'book' and title like '%nike%';
+
+create table cart(cartid number primary key, custid varchar2(20) references customer(custid),proid number references product(proid));
+
+create sequence seq_cartid;		//시퀀스생성
+insert into cart values(seq_cartid.NEXTVAL);
+
+
+select cartid from customer c, product p, cart a where c.custid = a.custid and p.proid = a.proid and c.custid = 'dudals1069' and p.proid = 2;

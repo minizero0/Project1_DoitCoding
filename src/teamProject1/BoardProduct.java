@@ -144,8 +144,6 @@ public class BoardProduct extends JFrame{
 		jtf_price = new JTextField(10);
 		jtf_content = new JTextArea();
 		jtf_imageurl = new JTextArea();
-		JButton btn_update = new JButton("글수정");
-		JButton btn_delete = new JButton("글삭제");
 		JButton btn_register = new JButton("글등록");
 		
 		JPanel jp1 = new JPanel();
@@ -187,13 +185,28 @@ public class BoardProduct extends JFrame{
 			
 		JPanel jp3 = new JPanel();
 		jp3.add(btn_register);
-		jp3.add(btn_update);
-		jp3.add(btn_delete);
+		
+		btn_register.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pv.setCustid(login_custid);
+				pv.setCategoryid(jcb.getSelectedIndex()+1);  
+				pv.setTitle(jtf_title.getText()); 
+				pv.setPrice(Integer.parseInt(jtf_price.getText())); 
+				pv.setImg(jtf_imageurl.getText()); 
+				pv.setContent(jtf_content.getText()); 
+				pd.board_write(pv);
+				dispose();
+			}
+		});
 				
 		setLayout(new BorderLayout());
 		add(jp1, BorderLayout.NORTH);
 		add(jp2, BorderLayout.CENTER);
 		add(jp3, BorderLayout.SOUTH);
+		
+		
 		
 		setSize(400,400);
 		setTitle("글 작성페이지");
