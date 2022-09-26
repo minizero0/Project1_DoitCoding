@@ -38,7 +38,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		JButton btn_cart = new JButton("장바구니");
 		JButton btn_new = new JButton("새로고침");
 		
-		jcb = new JComboBox<String>(cd.listCate());
+		jcb = new JComboBox<String>(cd.listCate("main"));
 		
 		jtf_search = new JTextField(20);
 		

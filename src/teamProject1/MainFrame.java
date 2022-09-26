@@ -39,7 +39,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		ProductDAO ProductDAO = new ProductDAO();
 		f = this;
 		
-		jcb = new JComboBox<String>(CategoryDAO.listCate());
+		jcb = new JComboBox<String>(CategoryDAO.listCate("main"));
 	
 		JButton btn_signUp = new JButton("회원가입");
 		JButton btn_login = new JButton("로그인");

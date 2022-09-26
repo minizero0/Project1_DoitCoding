@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 
 public class BoardProduct extends JFrame{
 	CategoryDAO cd = new CategoryDAO();
-	JComboBox<String> jcb = new JComboBox<String>(cd.listCate());
+	JComboBox<String> jcb = new JComboBox<String>(cd.listCate("other"));
 	JLabel jl;
 	JTextField jtf_title;
 	JTextField jtf_price;
@@ -103,7 +103,7 @@ public class BoardProduct extends JFrame{
 			btn_update.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					pv.setCategoryid(jcb.getSelectedIndex()+1);  
+					pv.setCategoryid(jcb.getSelectedIndex()+2);  
 					pv.setTitle(jtf_title.getText()); 
 					pv.setPrice(Integer.parseInt(jtf_price.getText())); 
 					pv.setImg(jtf_imageurl.getText()); 
@@ -188,7 +188,7 @@ public class BoardProduct extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				pv.setCustid(login_custid);
-				pv.setCategoryid(jcb.getSelectedIndex()+1);  
+				pv.setCategoryid(jcb.getSelectedIndex()+2);  
 				pv.setTitle(jtf_title.getText()); 
 				pv.setPrice(Integer.parseInt(jtf_price.getText())); 
 				pv.setImg(jtf_imageurl.getText()); 

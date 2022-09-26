@@ -186,17 +186,31 @@ public class ProductDAO {
 		vector.clear();
 		
 		String categoryname = cv.getCategoryname();
-		String sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
+		String sql;
+		System.out.println(categoryname);
+		if(categoryname.equals("all")) {
+			sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c where p.categoryid = c.categoryid";
+		}
+		else {
+			sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
 				+ "where p.categoryid = c.categoryid and categoryname = ? and title like ? order by proid";
+		}
 		
 		try {
+			
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
 					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
 					"c##project1", "project1");
-			PreparedStatement pstmt = conn.prepareStatement(sql); 
-			pstmt.setString(1, categoryname);
-			pstmt.setString(2, "%"+search_name+"%");
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			if(categoryname.equals("all"))
+				System.out.println("a");
+			else {
+				pstmt.setString(1, categoryname);
+				pstmt.setString(2, "%"+search_name+"%");
+			}
+			
 			
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {

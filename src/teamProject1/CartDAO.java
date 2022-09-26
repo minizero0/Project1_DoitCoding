@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 public class CartDAO {
 	
 	Vector<Vector<String>> rowData = new Vector<>();
+	
 	public boolean confirm_cart(String login_custid,int proid) {
 		boolean is_Flag = true;
 		String sql = "select cartid, c.proid from cart c, product p where p.proid = c.proid and c.custid = ? and c.proid = ?";
@@ -42,7 +43,9 @@ public class CartDAO {
 
 	public Vector listInfo(String login_custid) {
 		rowData.clear();
-		String sql = "select p.proid, c.cartid, categoryname, title, price, boarddate, p.custid from customer cust, product p, category cat, cart c where cat.categoryid = p.categoryid and cust.custid = c.custid and p.proid = c.proid and c.custid = '"+login_custid+"'";
+		String sql = "select p.proid, c.cartid, categoryname, title, price, boarddate, p.custid "
+				+ "from customer cust, product p, category cat, cart c where cat.categoryid = p.categoryid "
+				+ "and cust.custid = c.custid and p.proid = c.proid and c.custid = '"+login_custid+"' order by c.proid";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
@@ -103,7 +106,7 @@ public class CartDAO {
 	
 	public void cart_delete(int cartid) {					//장바구니에서 물품 삭제
 		
-		String sql = "delete cart where proid = ?";
+		String sql = "delete cart where cartid = ?";
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");

@@ -9,7 +9,8 @@ import java.util.Vector;
 
 
 public class CategoryDAO {
-	public Vector<String> listCate(){
+	
+	public Vector<String> listCate(String check){
 		Vector<String> list = new Vector<>();
 		String sql = "select categoryname from category";
 		try {
@@ -22,9 +23,15 @@ public class CategoryDAO {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			while(rs.next()) {
-				list.add(rs.getString(1));
+			if (check.equals("main")) {
+				while(rs.next()) 
+					list.add(rs.getString(1));
+			}else {
+				rs.next();
+				while(rs.next()) 
+					list.add(rs.getString(1));
 			}
+				
 			
 			conn.close();
 			stmt.close();
@@ -36,3 +43,5 @@ public class CategoryDAO {
 		
 	}
 }
+
+

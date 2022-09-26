@@ -37,7 +37,7 @@ public class Cart extends JFrame {				//장바구니 클래스
 			public void mouseReleased(MouseEvent e) {
 				int row = table.getSelectedRow();
 				Vector<String> v= (Vector<String>)CartDAO.listInfo(login_custid).get(row);	
-				int cartid = Integer.parseInt(v.get(0));
+				int cartid = Integer.parseInt(v.get(1));
 				int re = JOptionPane.showConfirmDialog(null, "장바구니에서 삭제하시겠습니까?");
 				if (re == 0) {
 					CartDAO.cart_delete(cartid);
