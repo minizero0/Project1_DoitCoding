@@ -148,7 +148,7 @@ public class ProductDAO {
 	
 	public Vector get_item() {
 		vector.clear();
-		String sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
+		String sql = "select proid, custid, categoryname, title, price, boarddate, content from product p, category c "
 				+ "where p.categoryid = c.categoryid order by proid";
 		
 		try {
@@ -169,7 +169,6 @@ public class ProductDAO {
 					vc.add(rs.getInt(5)+"");
 					vc.add(rs.getDate(6)+"");
 					vc.add(rs.getString(7));
-					vc.add(rs.getString(8));
 					vector.add(vc);
 				}
 				conn.close();

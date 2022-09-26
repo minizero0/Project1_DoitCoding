@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.regex.Pattern;
+import java.awt.BorderLayout;	
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,7 +35,6 @@ public class SignUp extends JFrame{			//회원가입 클래스
 	
 	public SignUp() {
 
-		setLayout(new GridLayout(8,2));
 		comment = new JLabel("                              *** 정보를 입력하세요 ***");
 		jtf_name = new JTextField(10);
 		jtf_phone = new JTextField(12);
@@ -44,46 +44,59 @@ public class SignUp extends JFrame{			//회원가입 클래스
 		jtf_birth = new JTextField(10);
 		
 		JPanel jp1 = new JPanel();
-		jp1.add(new JLabel("(*)이름: "));
+		jp1.setLayout(null);
+		
+		JLabel id = new JLabel("아이디 : ");
+		id.setBounds(20, 20, 67, 15);
+		jp1.add(id);
+		jtf_id.setBounds(90, 18, 100, 23);
+		jp1.add(jtf_id);
+		btn_confirm_id.setBounds(200, 18, 100, 23);
+		jp1.add(btn_confirm_id);
+		
+		JLabel pwd = new JLabel("비밀번호 : ");
+		pwd.setBounds(20, 52, 67, 15);
+		jp1.add(pwd);
+		jtf_pw.setBounds(90, 50, 100, 23);
+		jp1.add(jtf_pw);
+		btn_confirm_pwd.setBounds(200, 50, 110, 23);
+		jp1.add(btn_confirm_pwd);
+		
+		JLabel name = new JLabel("이름 : ");
+		name.setBounds(20, 87, 67, 15);
+		jp1.add(name);
+		jtf_name.setBounds(90, 85, 100, 23);
 		jp1.add(jtf_name);
+
+		JLabel phone = new JLabel("전화번호 : ");
+		phone.setBounds(20, 119, 67, 15);
+		jp1.add(phone);
+		jtf_phone.setBounds(90, 117, 150, 23);
+		jp1.add(jtf_phone);
 		
-		JPanel jp2 = new JPanel();
-		jp2.add(new JLabel("전화번호: "));
-		jp2.add(jtf_phone);
+		JLabel addr = new JLabel("주소 : ");
+		addr.setBounds(20, 151, 67, 15);
+		jp1.add(addr);
+		jtf_addr.setBounds(20, 175, 300, 23);
+		jp1.add(jtf_addr);
 		
-		JPanel jp3 = new JPanel();
-		jp3.add(new JLabel("주소: "));
-		jp3.add(jtf_addr);
-		
-		JPanel jp4 = new JPanel();
-		jp4.add(new JLabel("(*)아이디: "));
-		jp4.add(jtf_id);
-		jp4.add(btn_confirm_id);
-		
-		JPanel jp5 = new JPanel();
-		jp5.add(new JLabel("(*)비밀번호: "));
-		jp5.add(jtf_pw);
-		jp5.add(btn_confirm_pwd);
-		
-		JPanel jp6 = new JPanel();
-		jp6.add(new JLabel("생년월일(6자리): "));
-		jp6.add(jtf_birth);
-		jp6.add(new JLabel("예시) 990909"));
+		JLabel birth = new JLabel("생년월일(6자리) : ");
+		birth.setBounds(20, 208, 120, 15);
+		jp1.add(birth);
+		jtf_birth.setBounds(130, 206, 80, 23);
+		jp1.add(jtf_birth);
+		JLabel birth1 = new JLabel("예시) 990909 ");
+		birth1.setBounds(215, 208, 100, 15);
+		jp1.add(birth1);
 		
 		JPanel btn = new JPanel();
 		btn.add(btn_signup);
 		btn.add(btn_cancel);	
 	
-		add(comment);
-		add(jp4);
-		add(jp5);
-		add(jp1);
-		add(jp2);
-		add(jp3);
-		add(jp6);
-		add(btn);
-		
-		
+		setLayout(new BorderLayout());
+		add(comment, BorderLayout.NORTH);
+		add(jp1, BorderLayout.CENTER);
+		add(btn, BorderLayout.SOUTH);
 		
 		btn_confirm_id.addActionListener(new ActionListener() {
 			@Override
@@ -154,7 +167,7 @@ public class SignUp extends JFrame{			//회원가입 클래스
 			}
 		});		
 		
-		setSize(350,380);
+		setSize(350,330);
 		setTitle("회원가입");
 		setVisible(true);
 		setLocationRelativeTo(null);  			//화면을 가운데에 배치

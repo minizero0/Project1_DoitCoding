@@ -3,14 +3,17 @@ package teamProject1;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,11 +29,11 @@ public class DetailPage extends JFrame {			//상세화면
 	JTextArea jta_content;
 	BoardProduct bp = new BoardProduct();
 	ProductVO pv = new ProductVO();
+	CategoryVO cv = new CategoryVO();
 	CartDAO CartDAO = new CartDAO();
 	
 	public void getData(int board_proid) {
-		String sql = "select proid, custid, p.categoryid, title, price, boarddate, img, content, categoryname from product p, category c "
-				+ "where p.categoryid = c.categoryid and proid = ?";
+		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, img, content from product p, category c where p.categoryid = c.categoryid and proid = ?";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
@@ -44,13 +47,12 @@ public class DetailPage extends JFrame {			//상세화면
 			while(rs.next()) {
 				pv.setProid(rs.getInt(1));
 				pv.setCustid(rs.getString(2));
-				pv.setCategoryid(rs.getInt(3));
+				cv.setCategoryname(rs.getString(3));
 				pv.setTitle(rs.getString(4));
 				pv.setPrice(rs.getInt(5));
 				pv.setBoarddate(rs.getDate(6));
 				pv.setImg(rs.getString(7));
 				pv.setContent(rs.getString(8));
-				pv.setCategoryname(rs.getString(9));
 			}			
 			conn.close();
 			pstmt.close();
@@ -58,6 +60,7 @@ public class DetailPage extends JFrame {			//상세화면
 		}catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
 		}
+		
 	}
 	
 	
@@ -68,20 +71,36 @@ public class DetailPage extends JFrame {			//상세화면
 		JButton btn_delete = new JButton("삭제");
 		JButton btn_update = new JButton("수정");
 		
+		URL url;
+		ImageIcon icon_detailpage_before;
+		Image image_before;
+		Image image_after;
+		ImageIcon icon_detailpage_after;
+		
 		JPanel jp1 = new JPanel();
 		jp1.setLayout(null);
 		//jp1.setBorder(new TitledBorder("Info"));
+		try {
+			url = new URL(pv.getImg());
+			
+			icon_detailpage_before = new ImageIcon(url);
+			image_before = icon_detailpage_before.getImage();
+			image_after = image_before.getScaledInstance(150, 200, image_before.SCALE_SMOOTH);
+			icon_detailpage_after = new ImageIcon(image_after);
 		
-		JLabel image = new JLabel("이미지");						// 이미지데이터 불러오기
-		image.setBounds(80,80,200,200);
-		image.setForeground(Color.blue);
-		jp1.add(image);
+			JLabel image = new JLabel(icon_detailpage_after);						// 이미지데이터 불러오기
+			image.setBounds(5,40,200,250);
+			image.setForeground(Color.blue);
+			jp1.add(image);
+			
+		}catch(Exception e) {
+			System.out.println("예외" + e.getMessage());}
 		
 		JLabel category = new JLabel("카테고리 : ");
 		category.setFont(font1);
 		category.setBounds(30, 30, 67, 15);
 		jp1.add(category);
-		JLabel category_1 = new JLabel(pv.getCategoryname());  		   // 카테고리데이터 불러오기
+		JLabel category_1 = new JLabel(cv.getCategoryname()+"");  		   // 카테고리데이터 불러오기
 		category_1.setForeground(Color.blue);
 		category_1.setBounds(90, 31, 100, 15);
 		jp1.add(category_1);

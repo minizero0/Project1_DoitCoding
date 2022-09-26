@@ -55,7 +55,6 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		colName.add("title");
 		colName.add("price");
 		colName.add("date");
-		colName.add("img");
 		colName.add("content");
 		jta = new JTable(ProductDAO.get_item(), colName);
 		

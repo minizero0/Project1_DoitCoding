@@ -59,7 +59,6 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 		colName.add("title");
 		colName.add("price");
 		colName.add("date");
-		colName.add("img");
 		colName.add("content");
 		
 		jta = new JTable(ProductDAO.get_item(), colName);
