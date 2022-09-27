@@ -125,26 +125,6 @@ public class ProductDAO {
 		}
 	}
 	
-	public void board_select() {						//게시물 조회 
-		String sql = "select * product";
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
-					"c##project1", "project1");
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
-			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
-				
-			}
-			conn.close();
-			pstmt.close();
-		}catch (Exception e) {
-			System.out.println("예외발생:"+e.getMessage());
-		}
-	}
 	
 	public Vector get_item() {
 		vector.clear();
