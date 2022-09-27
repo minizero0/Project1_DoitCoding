@@ -19,11 +19,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 public class DetailPage extends JFrame {			//상세화면
-	Font font1;
+	Font font1, font2;
 	JTextArea jta_title;
 	JTextArea jta_price;
 	JTextArea jta_content;
@@ -31,42 +33,12 @@ public class DetailPage extends JFrame {			//상세화면
 	ProductVO pv = new ProductVO();
 	CategoryVO cv = new CategoryVO();
 	CartDAO CartDAO = new CartDAO();
-	
-	public void getData(int board_proid) {
-		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, img, content from product p, category c where p.categoryid = c.categoryid and proid = ?";
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
-					"c##project1", "project1");
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, board_proid);
-			
-			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
-				pv.setProid(rs.getInt(1));
-				pv.setCustid(rs.getString(2));
-				cv.setCategoryname(rs.getString(3));
-				pv.setTitle(rs.getString(4));
-				pv.setPrice(rs.getInt(5));
-				pv.setBoarddate(rs.getDate(6));
-				pv.setImg(rs.getString(7));
-				pv.setContent(rs.getString(8));
-			}			
-			conn.close();
-			pstmt.close();
-			
-		}catch (Exception e) {
-			System.out.println("예외발생:"+e.getMessage());
-		}
-		
-	}
-	
+	ProductDAO pd = new ProductDAO();
 	
 	public DetailPage(int board_proid, String login_custid){
-		getData(board_proid);
+		pd.getData(pv, cv, board_proid);
 		font1 = new Font("맑은 고딕", Font.BOLD,12);
+		font2 = new Font("굴림체", Font.BOLD,12);
 		JButton btn_cart = new JButton("장바구니 담기");
 		JButton btn_delete = new JButton("삭제");
 		JButton btn_update = new JButton("수정");
@@ -79,7 +51,7 @@ public class DetailPage extends JFrame {			//상세화면
 		
 		JPanel jp1 = new JPanel();
 		jp1.setLayout(null);
-		//jp1.setBorder(new TitledBorder("Info"));
+		
 		try {
 			url = new URL(pv.getImg());
 			
@@ -107,48 +79,60 @@ public class DetailPage extends JFrame {			//상세화면
 		
 		JLabel custid = new JLabel("작성자 : ");
 		custid.setFont(font1);
-		custid.setBounds(190, 30, 67, 15);
+		custid.setBounds(200, 30, 67, 15);
 		jp1.add(custid);
 		JLabel custid_1 = new JLabel(pv.getCustid());  		        // custid데이터 불러오기
 		custid_1.setForeground(Color.blue);
-		custid_1.setBounds(250, 31, 100, 15);
+		custid_1.setBounds(260, 31, 100, 15);
 		jp1.add(custid_1);
 		
 		JLabel date = new JLabel("게시일 : ");
 		date.setFont(font1);
-		date.setBounds(190, 63, 67, 15);
+		date.setBounds(200, 63, 67, 15);
 		jp1.add(date);
 		JLabel date_1 = new JLabel(pv.getBoarddate()+"");     // 게시일데이터 불러오기
 		date_1.setForeground(Color.blue);
-		date_1.setBounds(250, 64, 100, 15);
+		date_1.setBounds(260, 64, 100, 15);
 		jp1.add(date_1);
 		
 		JLabel title = new JLabel("제목 : ");
 		title.setFont(font1);
-		title.setBounds(190, 96, 67, 15);
+		title.setBounds(200, 96, 67, 15);
 		jp1.add(title);
 		JLabel title_1 = new JLabel(pv.getTitle()); 		// title데이터 불러오기
 		title_1.setForeground(Color.blue);
-		title_1.setBounds(250,97,130,15); 
+		title_1.setBounds(260,95,200,20); 
 		jp1.add(title_1);
 		
 		JLabel price = new JLabel("가격 : ");						
-		price.setBounds(190, 129, 67, 15);
+		price.setBounds(200, 129, 67, 15);
 		price.setFont(font1);
 		jp1.add(price);
 		JLabel price_1 = new JLabel(pv.getPrice() + "(원)");						// price데이터 불러오기
 		price_1.setForeground(Color.blue);
-		price_1.setBounds(250, 125, 90, 25);
+		price_1.setBounds(260, 125, 90, 25);
 		jp1.add(price_1);
 		
 		JLabel content = new JLabel("내용 : ");
-		content.setBounds(190, 162, 67, 15);
+		content.setBounds(200, 162, 67, 15);
 		content.setFont(font1);
 		jp1.add(content);
-		JLabel content_1 = new JLabel(pv.getContent());		// 내용데이터 불러오기
+		//JLabel content_1 = new JLabel(pv.getContent());		// 내용데이터 불러오기
+		JTextArea content_1 = new JTextArea(pv.getContent());	
 		content_1.setForeground(Color.blue);
-		content_1.setBounds(190, 185, 180, 120);
+		content_1.setFont(font2);
+		content_1.setBounds(200, 185, 220, 82);
 		jp1.add(content_1);
+		content_1.setEditable(false);
+		
+		 JLabel user = new JLabel("장바구니에 담은 사용자 수 : ");
+	    user.setBounds(150, 280, 200, 15);
+	    user.setFont(font1);
+	    jp1.add(user);
+	    JLabel user_1 = new JLabel(pd.count_custid(pv.getProid())+"");       // 사용자 수 데이터 불러오기
+	    user_1.setForeground(Color.blue);
+	    user_1.setBounds(310, 237, 180, 100);
+	    jp1.add(user_1);
 		
 		JPanel jp2 = new JPanel();
 		jp2.add(btn_cart);
@@ -194,7 +178,7 @@ public class DetailPage extends JFrame {			//상세화면
 		add(jp1, BorderLayout.CENTER);
 		add(jp2, BorderLayout.SOUTH);
 		
-		setSize(400,390);
+		setSize(470,385);
 		setTitle("Detail Page");
 		setVisible(true);
 		setLocationRelativeTo(null);  			//화면을 가운데에 배치

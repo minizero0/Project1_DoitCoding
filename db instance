@@ -30,3 +30,53 @@ insert into cart values(seq_cartid.NEXTVAL);
 select cartid from customer c, product p, cart a where c.custid = a.custid and p.proid = a.proid and c.custid = 'dudals1069' and p.proid = 2;
 
 select cartid from customer c, product p, cart a where c.custid = a.custid and p.proid = a.proid;
+
+
+
+String sql = "select p.proid, count(c.custid) from product p, cart c "
+				+ "where p.proid = c.proid and p.proid = ? group by p.proid";
+
+String s ="select proid, custid, categoryname, title, price, boarddate, content from product p, category c \"\n"
+				+"where p.categoryid = c.categoryid order by proid";
+		
+select p.proid, p.custid, categoryname, title, price, boarddate, (select count(c.custid) from product p left outer join cart c on p.proid = c.proid group by p.proid) array from product p, category c
+where p.categoryid = c.categoryid;
+		
+		
+select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid) from product p, category c, cart cat
+where p.categoryid = c.categoryid and p.proid = cat.proid group by p.proid, p.custid, categoryname, title, price, boarddate;
+		
+		
+		
+	
+		
+		
+		
+select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid) 
+from product p left outer join category c on (p.categoryid = c.categoryid) 
+where title = 'asd' left outer join cart cat on p.proid = cat.proid group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid;
+
+
+select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)
+from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid where title like '1' group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid;
+
+
+
+select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid) from cart cat right outer join product p on cat.proid = p.proid and title = 'asd' left outer join category c on (p.categoryid = c.categoryid) group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid;
+
+select 
+
+
+minus
+select p.proid, p.custid, categoryid, title, price, boarddate, count(cat.proid) from product p left outer join cart cat on p.proid = cat.proid where title = '1' group by p.proid, p.custid, categoryid, title, price, boarddate order by p.proid;
+
+
+		
+		
+select p.proid, p.custid, c.categoryname, title, price, boarddate, count(cat.proid) from product p left outer join cart cat on p.proid = cat.proid where title = '1' left outer join categoryname c on c.categoryid = p.categoryid 
+		
+		
+		
+		
+select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid) from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid where title like '1' group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid;
+		

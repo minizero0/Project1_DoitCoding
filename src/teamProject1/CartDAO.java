@@ -20,7 +20,7 @@ public class CartDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -49,7 +49,7 @@ public class CartDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			
 			Statement stmt = conn.createStatement();
@@ -85,7 +85,7 @@ public class CartDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -110,12 +110,10 @@ public class CartDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
-			System.out.println(login_custid);
-			System.out.println(proid);
 			pstmt.setString(1, login_custid);
 			pstmt.setInt(2, proid);
 			

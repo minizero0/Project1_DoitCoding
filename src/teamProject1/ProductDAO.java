@@ -10,7 +10,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 public class ProductDAO {
-	int proid;
+	int proid,count;
 	String title,content,custid,boarddate,img;
 	int price, cate;
 	Vector<Vector<String>> vector = new Vector<>();
@@ -22,7 +22,7 @@ public class ProductDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, board_proid);
@@ -52,7 +52,7 @@ public class ProductDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -79,7 +79,7 @@ public class ProductDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -103,7 +103,7 @@ public class ProductDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -128,14 +128,16 @@ public class ProductDAO {
 	
 	public Vector get_item() {
 		vector.clear();
-		String sql = "select proid, custid, categoryname, title, price, boarddate, content from product p, category c "
-				+ "where p.categoryid = c.categoryid order by proid";
+		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid) "
+				+ "from product p left outer join category c on p.categoryid = c.categoryid left outer join "
+				+ "cart cat on p.proid = cat.proid "
+				+ "group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
 		
 		try {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				Connection conn = DriverManager.getConnection(
-						"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+						"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 						"c##project1", "project1");
 				Statement stmt = conn.createStatement();
 				
@@ -148,7 +150,7 @@ public class ProductDAO {
 					vc.add(rs.getString(4));
 					vc.add(rs.getInt(5)+"");
 					vc.add(rs.getDate(6)+"");
-					vc.add(rs.getString(7));
+					vc.add(rs.getInt(7)+"");
 					vector.add(vc);
 				}
 				conn.close();
@@ -161,47 +163,50 @@ public class ProductDAO {
 	}
 	
 	
-	public void Search_keyword_MainFrame(CategoryVO cv, String search_name) { // 로그인 전 메인페이지
+	public void Search_keyword_MainFrame(CategoryVO cv, String search_name) { 
 		vector.clear();
 		
 		String categoryname = cv.getCategoryname();
 		String sql;
+		System.out.println(categoryname);
 		if(categoryname.equals("all")) {
-			sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
-					+ "where p.categoryid = c.categoryid and title like ? order by proid";
+			sql =  "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
+					+ " from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid"
+					+ " where title like ?"
+					+ " group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
 		}
 		else {
-			sql = "select proid, custid, categoryname, title, price, boarddate, img, content from product p, category c "
-				+ "where p.categoryid = c.categoryid and categoryname = ? and title like ? order by proid";
+			sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
+					+ " from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid"
+					+ " where title like ? and categoryname = ?"
+					+ " group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
 		}
 		
 		try {
 			
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
 					"c##project1", "project1");
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			if(categoryname.equals("all")) {
-				pstmt.setString(1, "%"+search_name+"%");
-			}
-			else {
-				pstmt.setString(1, categoryname);
-				pstmt.setString(2, "%"+search_name+"%");
+			
+			pstmt.setString(1, "%"+search_name+"%");
+			if(!categoryname.equals("all")) {
+				
+				pstmt.setString(2, categoryname);
 			}
 			
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Vector<String> vc = new Vector<>();
 				vc.add(rs.getInt(1)+"");
-				vc.add(rs.getString(2));
-				vc.add(rs.getString(3));
-				vc.add(rs.getString(4));
-				vc.add(rs.getInt(5)+"");
-				vc.add(rs.getDate(6)+"");
-				vc.add(rs.getString(7));
-				vc.add(rs.getString(8));
+                vc.add(rs.getString(2));
+                vc.add(rs.getString(3));
+                vc.add(rs.getString(4));
+                vc.add(rs.getInt(5)+"");
+                vc.add(rs.getDate(6)+"");
+                vc.add(rs.getInt(7)+"");
 				vector.add(vc);
 			}
 			conn.close();
@@ -211,6 +216,65 @@ public class ProductDAO {
 		}catch(Exception e) {
 			System.out.println("예외" + e.getMessage());
 			}	
+	}
+	
+	public void getData(ProductVO pv, CategoryVO cv, int board_proid) {
+		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, img, content from product p, category c where p.categoryid = c.categoryid and proid = ?";
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			Connection conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+					"c##project1", "project1");
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_proid);
+			
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				pv.setProid(rs.getInt(1));
+				pv.setCustid(rs.getString(2));
+				cv.setCategoryname(rs.getString(3));
+				pv.setTitle(rs.getString(4));
+				pv.setPrice(rs.getInt(5));
+				pv.setBoarddate(rs.getDate(6));
+				pv.setImg(rs.getString(7));
+				pv.setContent(rs.getString(8));
+			}			
+			conn.close();
+			pstmt.close();
+			
+		}catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		}
+		
+	}
+	
+	public Integer count_custid(int board_proid) {
+		String sql = "select p.proid, count(c.custid) from product p, cart c where p.proid = c.proid and p.proid = ? group by p.proid";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			Connection conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+					"c##project1", "project1");
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_proid);
+			
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				proid = rs.getInt(1);
+				count = rs.getInt(2);
+			}
+			
+			conn.close();
+			pstmt.close();
+			rs.close();
+			
+		}catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		}
+		return count;
 	}
 	
 	

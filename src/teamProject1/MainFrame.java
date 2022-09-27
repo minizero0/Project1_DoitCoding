@@ -55,7 +55,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		colName.add("title");
 		colName.add("price");
 		colName.add("date");
-		colName.add("content");
+		colName.add("like");
 		jta = new JTable(ProductDAO.get_item(), colName);
 		
 		jta.addMouseListener(new MouseListener() {
@@ -99,14 +99,6 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		jta1 = new JTextArea();
 		jta2 = new JTextArea();
 		jta3 = new JTextArea();
-		
-		
-		jtp = new JTabbedPane();
-		jtp.add("도서",jta1);
-		jtp.add("의류",jta2);
-		jtp.add("전자",jta3);
-//		JScrollPane jsp = new JScrollPane(jtp);
-		
 		
 		JPanel jp1 = new JPanel();
 		jp1.add(jtf_search);
