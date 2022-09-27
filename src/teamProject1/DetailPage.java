@@ -152,7 +152,12 @@ public class DetailPage extends JFrame {			//상세화면
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				bp.BoardUpdate(board_proid, login_custid);
+				String title = pv.getTitle();
+				int price = pv.getPrice();
+				String img = pv.getImg();
+				String content = pv.getContent();
+				bp.BoardUpdate(board_proid, login_custid, title, price, img, content);
+				
 			}
 		});
 		

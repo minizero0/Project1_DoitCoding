@@ -47,7 +47,7 @@ public class BoardProduct extends JFrame{
 	}
 	
 	//게시물 업데이트
-	public void BoardUpdate(int board_proid, String login_custid) {
+	public void BoardUpdate(int board_proid, String login_custid, String get_title, int get_price, String get_img, String get_content) {
 		
 		jtf_title = new JTextField(40);
 		jtf_price = new JTextField(10);
@@ -68,12 +68,14 @@ public class BoardProduct extends JFrame{
 		title.setBounds(20, 30, 67, 15);
 		jp2.add(title);
 		jtf_title.setBounds(70, 26, 150, 25);
+		jtf_title.setText(get_title);
 		jp2.add(jtf_title);
 		
 		JLabel price = new JLabel("가격: ");
 		price.setBounds(20, 65, 67, 15);
 		jp2.add(price);
 		jtf_price.setBounds(70, 61, 90, 25);
+		jtf_price.setText(get_price+"");
 		jp2.add(jtf_price);
 		JLabel price_won = new JLabel("(원) ");
 		price_won.setBounds(170, 65, 67, 15);
@@ -84,6 +86,7 @@ public class BoardProduct extends JFrame{
 		jp2.add(imageurl);	
 		JScrollPane jsp2 = new JScrollPane(jtf_imageurl);
 		jsp2.setBounds(100, 98, 250, 35);
+		jtf_imageurl.setText(get_img);
 		jp2.add(jsp2);
 				
 		JLabel content = new JLabel("내용: ");
@@ -91,6 +94,7 @@ public class BoardProduct extends JFrame{
 		jp2.add(content);	
 		JScrollPane jsp = new JScrollPane(jtf_content);
 		jsp.setBounds(70, 140, 285, 140);
+		jtf_content.setText(get_content);
 		jp2.add(jsp);
 			
 		JPanel jp3 = new JPanel();
