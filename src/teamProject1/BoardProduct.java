@@ -145,11 +145,12 @@ public class BoardProduct extends JFrame{
 		jtf_price = new JTextField(10);
 		jtf_content = new JTextArea();
 		jtf_imageurl = new JTextArea();
+		JButton btn_update = new JButton("글수정");
+		JButton btn_delete = new JButton("글삭제");
 		JButton btn_register = new JButton("글등록");
 		
 		JPanel jp1 = new JPanel();
 		jl = new JLabel("   상품에 대한 정보를 작성하세요.");
-		jp1.add(jcb);
 		jp1.add(jl);
 		
 		JPanel jp2 = new JPanel();
@@ -158,58 +159,45 @@ public class BoardProduct extends JFrame{
 		JLabel title = new JLabel("제목: ");
 		title.setBounds(20, 30, 67, 15);
 		jp2.add(title);
-		jtf_title.setBounds(70, 26, 150, 25);
+		jtf_title.setBounds(85, 26, 285, 25);
 		jp2.add(jtf_title);
 		
+		JLabel category = new JLabel("카테고리: ");
+		category.setBounds(20, 65, 67, 15);
+		jp2.add(category);
+		jcb.setBounds(85, 61, 100, 25);
+		jp2.add(jcb);
+		
 		JLabel price = new JLabel("가격: ");
-		price.setBounds(20, 65, 67, 15);
+		price.setBounds(20, 100, 67, 15);
 		jp2.add(price);
-		jtf_price.setBounds(70, 61, 90, 25);
+		jtf_price.setBounds(85, 96, 90, 25);
 		jp2.add(jtf_price);
 		JLabel price_won = new JLabel("(원) ");
-		price_won.setBounds(170, 65, 67, 15);
+		price_won.setBounds(180, 100, 67, 15);
 		jp2.add(price_won);		
 		
-		JLabel imageurl = new JLabel("이미지주소: ");
-		imageurl.setBounds(20, 58, 100, 100);
+		JLabel imageurl = new JLabel("이미지: ");
+		imageurl.setBounds(20, 92, 100, 100);
 		jp2.add(imageurl);	
 		JScrollPane jsp2 = new JScrollPane(jtf_imageurl);
-		jsp2.setBounds(100, 98, 250, 35);
-		jp2.add(jsp2);
-				
+		jsp2.setBounds(85, 131, 285, 35);
+		jp2.add(jsp2);		
+		
 		JLabel content = new JLabel("내용: ");
-		content.setBounds(20, 140, 67, 15);
+		content.setBounds(20, 175, 67, 15);
 		jp2.add(content);	
 		JScrollPane jsp = new JScrollPane(jtf_content);
-		jsp.setBounds(70, 140, 285, 140);
+		jsp.setBounds(85, 175, 285, 115);
 		jp2.add(jsp);
 			
 		JPanel jp3 = new JPanel();
-		jp3.add(btn_register);
-		
-		btn_register.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				pv.setCustid(login_custid);
-				pv.setCategoryid(jcb.getSelectedIndex()+2);  
-				pv.setTitle(jtf_title.getText()); 
-				pv.setPrice(Integer.parseInt(jtf_price.getText())); 
-				pv.setImg(jtf_imageurl.getText()); 
-				pv.setContent(jtf_content.getText()); 
-				pd.board_write(pv);
-				pd.get_item();
-				
-				dispose();
-			}
-		});
+		jp3.add(btn_update);
 				
 		setLayout(new BorderLayout());
 		add(jp1, BorderLayout.NORTH);
 		add(jp2, BorderLayout.CENTER);
 		add(jp3, BorderLayout.SOUTH);
-		
-		
 		
 		setSize(400,400);
 		setTitle("글 작성페이지");

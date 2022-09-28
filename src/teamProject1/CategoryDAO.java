@@ -18,7 +18,7 @@ public class CategoryDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@172.30.1.3:1521:XE", 
+					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
 					"c##project1", "project1");
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
