@@ -15,7 +15,7 @@ public class ProductDAO {
 	int price, cate;
 	Vector<Vector<String>> vector = new Vector<>();
 	
-	
+	//사용자 id와 게시물을 작성한 id가 동일한지 확인
 	public boolean confirm_id(int board_proid,String login_custid) { 		//로그인한 사용자 아이디와 게시물을 작성한 사용자 아이디를 확인
 		boolean check_login = false;
 		String sql = "select custid from product where proid = ?";
@@ -45,6 +45,7 @@ public class ProductDAO {
 		return check_login;
 	}
 	
+	//상품 작성 메소드
 	public void board_write(ProductVO pv) {					//게시물 작성
 		
 
@@ -74,6 +75,7 @@ public class ProductDAO {
 		}
 	}
 	
+	//상품 삭제 메소드
 	public void board_delete(int board_proid) {					//게시물 삭제
 		String sql = "delete product where proid = ?";
 		
@@ -98,6 +100,7 @@ public class ProductDAO {
 		}
 	}
 	
+	//상품 업데이트 메소드
 	public void board_update(ProductVO pv) {					//게시물 수정
 		String sql = "update product set categoryid = ?, title = ?,price = ?, img = ?, content = ? where proid = ? ";
 		try {
@@ -126,7 +129,7 @@ public class ProductDAO {
 		}
 	}
 	
-	
+	//모든 테이블 데이터 뽑기
 	public Vector get_item() {
 		vector.clear();
 		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid) "
@@ -163,6 +166,7 @@ public class ProductDAO {
 		return vector;
 	}
 	
+	//서치 테이블 메소드
 	public Vector select_item(CategoryVO cv, String search_name) {
 		vector.clear();
 		
@@ -221,7 +225,7 @@ public class ProductDAO {
 		return vector;
 	}
 	
-	
+	//서치를 통한 데이터뽑기
 	public void Search_keyword_MainFrame(CategoryVO cv, String search_name) { 
 		vector.clear();
 		
@@ -275,6 +279,7 @@ public class ProductDAO {
 			}	
 	}
 	
+	//디테일 페이지에 데이터 삽입
 	public void getData(ProductVO pv, CategoryVO cv, int board_proid) {
 		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, img, content from product p, category c "
 				+ "where p.categoryid = c.categoryid and proid = ?";
@@ -309,7 +314,8 @@ public class ProductDAO {
 		
 	}
 	
-	public Integer count_custid(int board_proid) {
+	//장바구니에 담긴 개수
+	public Integer count_custid(int board_proid) {		 
 		String sql = "select p.proid, count(c.custid) from product p, cart c where p.proid = c.proid and p.proid = ? group by p.proid";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");

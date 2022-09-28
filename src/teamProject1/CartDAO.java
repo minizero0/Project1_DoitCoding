@@ -14,6 +14,7 @@ public class CartDAO {
 	
 	Vector<Vector<String>> rowData = new Vector<>();
 	
+	//사용자는 동일한 게시물을 한 번만 장바구니에 담을 수 있는 메소드
 	public boolean confirm_cart(String login_custid,int proid) {
 		boolean is_Flag = true;
 		String sql = "select cartid, c.proid from cart c, product p where p.proid = c.proid and c.custid = ? and c.proid = ?";
@@ -41,6 +42,7 @@ public class CartDAO {
 		return is_Flag;
 	}
 
+	//로그인된 아이디의 장바구니 목록 출력
 	public Vector listInfo(String login_custid) {
 		rowData.clear();
 		String sql = "select p.proid, categoryname, title, price, boarddate, p.custid "

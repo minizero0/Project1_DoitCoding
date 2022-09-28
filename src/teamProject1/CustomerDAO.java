@@ -14,10 +14,11 @@ public class CustomerDAO {
 	JTextField jtf_name,jtf_phone,jtf_addr,jtf_birth;
 	
 	
-public boolean addUsers(CustomerVO CustomerVO) {
+	//아이디 삽입 메소드
+	public boolean addUsers(CustomerVO CustomerVO) {
 
-	String sql = "insert into customer values(?,?,?,?,?,?)"; 
-	boolean flag_addUsers = false;
+		String sql = "insert into customer values(?,?,?,?,?,?)"; 
+		boolean flag_addUsers = false;
 		try {
 			String custid = CustomerVO.getCustid();
 			String custpwd = CustomerVO.getCustpwd();
@@ -58,6 +59,7 @@ public boolean addUsers(CustomerVO CustomerVO) {
 		return flag_addUsers;
 	}
 	
+	//아이디 중복성 확인 메소드
 	public void confirm_id(CustomerVO CustomerVO) {
 		String sql = "select custid from customer where custid = ?";
 		boolean signUp_Flag = true;
@@ -90,6 +92,7 @@ public boolean addUsers(CustomerVO CustomerVO) {
 		}
 	}
 	
+	//로그인 아이디와 비밀번호가 동일한지 확인 
 	public boolean confirm_login(CustomerVO CustomerVO) {
 
 		boolean login_Flag = false;
