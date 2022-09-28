@@ -145,8 +145,6 @@ public class BoardProduct extends JFrame{
 		jtf_price = new JTextField(10);
 		jtf_content = new JTextArea();
 		jtf_imageurl = new JTextArea();
-		JButton btn_update = new JButton("글수정");
-		JButton btn_delete = new JButton("글삭제");
 		JButton btn_register = new JButton("글등록");
 		
 		JPanel jp1 = new JPanel();
@@ -192,7 +190,25 @@ public class BoardProduct extends JFrame{
 		jp2.add(jsp);
 			
 		JPanel jp3 = new JPanel();
-		jp3.add(btn_update);
+		jp3.add(btn_register);
+		
+		btn_register.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pv.setCustid(login_custid);
+				pv.setCategoryid(jcb.getSelectedIndex()+2);  
+				pv.setTitle(jtf_title.getText()); 
+				pv.setPrice(Integer.parseInt(jtf_price.getText())); 
+				pv.setImg(jtf_imageurl.getText()); 
+				pv.setContent(jtf_content.getText()); 
+				pd.board_write(pv);
+				pd.get_item();
+				
+				dispose();
+			}
+		});
+				
 				
 		setLayout(new BorderLayout());
 		add(jp1, BorderLayout.NORTH);
@@ -206,7 +222,6 @@ public class BoardProduct extends JFrame{
 		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
 		
 	}
-	
 	
 	
 }
