@@ -46,15 +46,13 @@ public class CustomerDAO {
 				JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
 				flag_addUsers = true;
 				
-			}else {
-				JOptionPane.showMessageDialog(null, "아이디, 비밀번호, 이름은 필수입력사항입니다.");
 			}
 			
 			pstmt.close();
 			conn.close();
 			
 		}catch (Exception ex) {
-			System.out.println("예외발생:"+ex.getMessage());
+			JOptionPane.showMessageDialog(null, "아이디, 비밀번호, 이름은 필수입력사항입니다.");
 		}
 		return flag_addUsers;
 	}
