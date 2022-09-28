@@ -276,7 +276,8 @@ public class ProductDAO {
 	}
 	
 	public void getData(ProductVO pv, CategoryVO cv, int board_proid) {
-		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, img, content from product p, category c where p.categoryid = c.categoryid and proid = ?";
+		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, img, content from product p, category c "
+				+ "where p.categoryid = c.categoryid and proid = ?";
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -285,6 +286,7 @@ public class ProductDAO {
 					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
 					"c##project1", "project1");
 			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
 			pstmt.setInt(1, board_proid);
 			
 			ResultSet rs = pstmt.executeQuery();

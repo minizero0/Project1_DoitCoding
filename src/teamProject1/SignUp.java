@@ -134,30 +134,30 @@ public class SignUp extends JFrame{			//회원가입 클래스
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (id_Flag && pw_Flag) {
-				String custid = jtf_id.getText();
-                String custpwd = jtf_pw.getText();
-                String name = jtf_name.getText();
-            	String phone =jtf_phone.getText();
-            	String addr = jtf_addr.getText();
-            	String birth = jtf_birth.getText();
-				
-            	cv.setCustid(custid);
-            	cv.setCustpwd(custpwd);
-            	cv.setName(name);
-            	cv.setPhone(phone);
-            	cv.setAddr(addr);
-            	cv.setBirth(birth);
-				
-            	if(cd.addUsers(cv))
-            		dispose();
-				}
+					String custid = jtf_id.getText();
+	                String custpwd = jtf_pw.getText();
+	                String name = jtf_name.getText();
+	            	String phone =jtf_phone.getText();
+	            	String addr = jtf_addr.getText();
+	            	String birth = jtf_birth.getText();
+					
+	            	cv.setCustid(custid);
+	            	cv.setCustpwd(custpwd);
+	            	cv.setName(name);
+	            	cv.setPhone(phone);
+	            	cv.setAddr(addr);
+	            	cv.setBirth(birth);
+					
+	            	if(cd.addUsers(cv))
+	            		dispose();
+					}
 				else {
 					if (!id_Flag)
 						JOptionPane.showMessageDialog(null, "아이디 중복성을 확인해주세요.");
 					else if(!pw_Flag)
 						JOptionPane.showMessageDialog(null, "비밀번호 적합성을 확인해주세요.");
+					}
 				}
-			}
 		});
 		
 		btn_cancel.addActionListener(new ActionListener() {

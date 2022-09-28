@@ -28,7 +28,7 @@ public class CategoryDAO {
 					list.add(rs.getString(1));
 			}else {
 				rs.next();
-				while(rs.next()) 
+				while(rs.next())
 					list.add(rs.getString(1));
 			}
 				

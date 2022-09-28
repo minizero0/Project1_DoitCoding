@@ -36,7 +36,6 @@ public class BoardProduct extends JFrame{
 	//게시물 삭제
 	public void BoardDelete(int board_proid, String login_custid) {  //String login_custid
 //		pd.board_delete(board_proid);
-		System.out.println(board_proid);
 		if(pd.confirm_id(board_proid, login_custid)) {
 			pd.board_delete(board_proid);
 			pd.get_item();
@@ -108,7 +107,7 @@ public class BoardProduct extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					pv.setCategoryid(jcb.getSelectedIndex()+2);  
-					pv.setTitle(jtf_title.getText()); 
+					pv.setTitle(jtf_title.getText());
 					pv.setPrice(Integer.parseInt(jtf_price.getText())); 
 					pv.setImg(jtf_imageurl.getText()); 
 					pv.setContent(jtf_content.getText()); 

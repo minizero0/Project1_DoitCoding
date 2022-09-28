@@ -46,7 +46,7 @@ public boolean addUsers(CustomerVO CustomerVO) {
 				flag_addUsers = true;
 				
 			}else {
-				JOptionPane.showMessageDialog(null, "(*)표시부분은 필수입력사항입니다.");
+				JOptionPane.showMessageDialog(null, "아이디, 비밀번호, 이름은 필수입력사항입니다.");
 			}
 			
 			pstmt.close();

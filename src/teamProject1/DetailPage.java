@@ -57,7 +57,7 @@ public class DetailPage extends JFrame {			//상세화면
 			
 			icon_detailpage_before = new ImageIcon(url);
 			image_before = icon_detailpage_before.getImage();
-			image_after = image_before.getScaledInstance(150, 200, image_before.SCALE_SMOOTH);
+			image_after = image_before.getScaledInstance(150, 200, image_before.SCALE_SMOOTH);  //이미지 사이즈 맞추기
 			icon_detailpage_after = new ImageIcon(image_after);
 		
 			JLabel image = new JLabel(icon_detailpage_after);						// 이미지데이터 불러오기
@@ -173,9 +173,6 @@ public class DetailPage extends JFrame {			//상세화면
 					else
 						JOptionPane.showMessageDialog(null, "이미 장바구니에 담긴 상품입니다.");
 				}
-					
-					
-				
 			}
 		});
 		
