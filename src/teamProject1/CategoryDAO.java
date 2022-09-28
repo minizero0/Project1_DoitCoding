@@ -31,7 +31,6 @@ public class CategoryDAO {
 				while(rs.next())
 					list.add(rs.getString(1));
 			}
-				
 			
 			conn.close();
 			stmt.close();
