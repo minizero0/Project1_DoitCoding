@@ -151,7 +151,7 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 				String search_name = jtf_search.getText();
 				String item = jcb.getSelectedItem().toString();
 				CategoryVO.setCategoryname(item);
-				ProductDAO.Search_keyword_MainFrame(CategoryVO, search_name);
+				ProductDAO.select_item(CategoryVO, search_name);
 				jta.updateUI();
 			}
 		});

@@ -187,7 +187,6 @@ public class ProductDAO {
 				+ " group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
 		}
 		
-		
 		try {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
@@ -223,60 +222,6 @@ public class ProductDAO {
 			System.out.println("예외발생:"+e.getMessage());
 		}
 		return vector;
-	}
-	
-	//서치를 통한 데이터뽑기
-	public void Search_keyword_MainFrame(CategoryVO cv, String search_name) { 
-		vector.clear();
-		
-		String categoryname = cv.getCategoryname();
-		String sql;
-		if(categoryname.equals("all")) {
-			sql =  "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
-					+ " from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid"
-					+ " where title like ?"
-					+ " group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
-		}
-		else {
-			sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
-					+ " from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid"
-					+ " where title like ? and categoryname = ?"
-					+ " group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
-		}
-		
-		try {
-			
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			Connection conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
-					"c##project1", "project1");
-			
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, "%"+search_name+"%");
-			if(!categoryname.equals("all")) {
-				pstmt.setString(2, categoryname);
-			}
-			
-			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
-				Vector<String> vc = new Vector<>();
-				vc.add(rs.getInt(1)+"");
-                vc.add(rs.getString(2));
-                vc.add(rs.getString(3));
-                vc.add(rs.getString(4));
-                vc.add(rs.getInt(5)+"");
-                vc.add(rs.getDate(6)+"");
-                vc.add(rs.getInt(7)+"");
-				vector.add(vc);
-			}
-			conn.close();
-			pstmt.close();
-			rs.close();
-			
-		}catch(Exception e) {
-			System.out.println("예외" + e.getMessage());
-			}	
 	}
 	
 	//디테일 페이지에 데이터 삽입

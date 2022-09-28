@@ -159,7 +159,7 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 				String search_name = jtf_search.getText();
 				String item = jcb.getSelectedItem().toString();
 				CategoryVO.setCategoryname(item);
-				ProductDAO.Search_keyword_MainFrame(CategoryVO, search_name);
+				ProductDAO.select_item(CategoryVO, search_name);
 				jta.updateUI();
 			}
 		});
