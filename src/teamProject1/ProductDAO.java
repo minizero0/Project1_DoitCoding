@@ -163,13 +163,26 @@ public class ProductDAO {
 		return vector;
 	}
 	
-	public Vector select_item(CategoryVO cv) {
+	public Vector select_item(CategoryVO cv, String search_name) {
 		vector.clear();
+		
 		String categoryname = cv.getCategoryname();
-		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
+		System.out.println(categoryname);
+		System.out.println(search_name);
+		String sql;
+		if (categoryname.equals("all")){
+			sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
+					+ " from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid"
+					+ " where title like ?"
+					+ " group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
+		}
+		else {
+			sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
 				+ " from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid"
-				+ " where categoryname = ?"
+				+ " where categoryname = ? and title like ?"
 				+ " group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
+		}
+		
 		
 		try {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -179,7 +192,13 @@ public class ProductDAO {
 						"c##project1", "project1");
 				PreparedStatement pstmt = conn.prepareStatement(sql);
 				
-				pstmt.setString(1, categoryname);
+				
+				if(!categoryname.equals("all")) {
+					pstmt.setString(1, categoryname);
+					pstmt.setString(2, "%"+search_name+"%");
+				}
+				else
+					pstmt.setString(1, "%"+search_name+"%");
 				
 				ResultSet rs = pstmt.executeQuery();
 				while(rs.next()) {
@@ -208,7 +227,6 @@ public class ProductDAO {
 		
 		String categoryname = cv.getCategoryname();
 		String sql;
-		System.out.println(categoryname);
 		if(categoryname.equals("all")) {
 			sql =  "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
 					+ " from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid"

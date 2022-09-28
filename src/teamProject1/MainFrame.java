@@ -63,14 +63,19 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				int row = jta.getSelectedRow();
+				String name = jtf_search.getText();
 				Vector<String> v;
-				if(jcb.getSelectedItem().toString().equals("all"))
-					v = (Vector<String>)ProductDAO.get_item().get(row);
+				if(jcb.getSelectedItem().toString().equals("all")) {
+					if (jtf_search.getText().length() > 0)
+						v = (Vector<String>)ProductDAO.select_item(CategoryVO,name).get(row);
+					else
+						v = (Vector<String>)ProductDAO.get_item().get(row);
+				}
 				else
-					v = (Vector<String>)ProductDAO.select_item(CategoryVO).get(row);	
+					v = (Vector<String>)ProductDAO.select_item(CategoryVO, name).get(row);	
 				
 				int board_proid = Integer.parseInt(v.get(0));
-				new DetailPage(board_proid, login_custid);
+				new DetailPage(board_proid, login_custid);	
 				
 			}
 			@Override
