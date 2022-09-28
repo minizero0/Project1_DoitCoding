@@ -63,7 +63,12 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				int row = jta.getSelectedRow();
-				Vector<String> v= (Vector<String>)ProductDAO.get_item().get(row);	
+				Vector<String> v;
+				if(!CategoryVO.getCategoryname().equals("all")) 
+					v = (Vector<String>)ProductDAO.select_item(CategoryVO).get(row);
+				else
+					v = (Vector<String>)ProductDAO.get_item().get(row);	
+				
 				int board_proid = Integer.parseInt(v.get(0));
 				new DetailPage(board_proid, login_custid);
 				

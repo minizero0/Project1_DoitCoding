@@ -15,6 +15,7 @@ public class ProductDAO {
 	int price, cate;
 	Vector<Vector<String>> vector = new Vector<>();
 	
+	
 	public boolean confirm_id(int board_proid,String login_custid) { 		//로그인한 사용자 아이디와 게시물을 작성한 사용자 아이디를 확인
 		boolean check_login = false;
 		String sql = "select custid from product where proid = ?";
@@ -162,6 +163,44 @@ public class ProductDAO {
 		return vector;
 	}
 	
+	public Vector select_item(CategoryVO cv) {
+		vector.clear();
+		String categoryname = cv.getCategoryname();
+		String sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
+				+ " from product p left outer join category c on p.categoryid = c.categoryid left outer join cart cat on p.proid = cat.proid"
+				+ " where categoryname = ?"
+				+ " group by p.proid, p.custid, categoryname, title, price, boarddate order by p.proid";
+		
+		try {
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				
+				Connection conn = DriverManager.getConnection(
+						"jdbc:oracle:thin:@192.168.0.120:1521:XE", 
+						"c##project1", "project1");
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, categoryname);
+				ResultSet rs = pstmt.executeQuery();
+				while(rs.next()) {
+					Vector<String> vc = new Vector<>();
+					vc.add(rs.getInt(1)+"");
+					vc.add(rs.getString(2));
+					vc.add(rs.getString(3));
+					vc.add(rs.getString(4));
+					vc.add(rs.getInt(5)+"");
+					vc.add(rs.getDate(6)+"");
+					vc.add(rs.getInt(7)+"");
+					vector.add(vc);
+				}
+				conn.close();
+				rs.close();
+			
+		}catch (Exception e) {
+			System.out.println("예외발생:"+e.getMessage());
+		}
+		return vector;
+	}
+	
 	
 	public void Search_keyword_MainFrame(CategoryVO cv, String search_name) { 
 		vector.clear();
@@ -193,7 +232,6 @@ public class ProductDAO {
 			
 			pstmt.setString(1, "%"+search_name+"%");
 			if(!categoryname.equals("all")) {
-				
 				pstmt.setString(2, categoryname);
 			}
 			
