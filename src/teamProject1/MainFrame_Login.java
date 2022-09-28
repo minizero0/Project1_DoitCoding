@@ -70,10 +70,10 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 			public void mouseReleased(MouseEvent e) {
 				int row = jta.getSelectedRow();
 				Vector<String> v;
-				if(!CategoryVO.getCategoryname().equals("all")) 
-					v = (Vector<String>)ProductDAO.select_item(CategoryVO).get(row);
+				if(jcb.getSelectedItem().toString().equals("all"))
+					v = (Vector<String>)ProductDAO.get_item().get(row);
 				else
-					v = (Vector<String>)ProductDAO.get_item().get(row);	
+					v = (Vector<String>)ProductDAO.select_item(CategoryVO).get(row);	
 				
 				int board_proid = Integer.parseInt(v.get(0));
 				new DetailPage(board_proid, login_custid);

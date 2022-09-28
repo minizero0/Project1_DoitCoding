@@ -180,6 +180,7 @@ public class ProductDAO {
 				PreparedStatement pstmt = conn.prepareStatement(sql);
 				
 				pstmt.setString(1, categoryname);
+				
 				ResultSet rs = pstmt.executeQuery();
 				while(rs.next()) {
 					Vector<String> vc = new Vector<>();

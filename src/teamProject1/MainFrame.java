@@ -64,10 +64,10 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 			public void mouseReleased(MouseEvent e) {
 				int row = jta.getSelectedRow();
 				Vector<String> v;
-				if(!CategoryVO.getCategoryname().equals("all")) 
-					v = (Vector<String>)ProductDAO.select_item(CategoryVO).get(row);
+				if(jcb.getSelectedItem().toString().equals("all"))
+					v = (Vector<String>)ProductDAO.get_item().get(row);
 				else
-					v = (Vector<String>)ProductDAO.get_item().get(row);	
+					v = (Vector<String>)ProductDAO.select_item(CategoryVO).get(row);	
 				
 				int board_proid = Integer.parseInt(v.get(0));
 				new DetailPage(board_proid, login_custid);
@@ -97,7 +97,6 @@ public class MainFrame extends JFrame{			//처음 보여지는 메인 프레임
 		});
 		
 		JScrollPane jsp = new JScrollPane(jta);
-		
 		
 		
 		jtf_search = new JTextField(20);
