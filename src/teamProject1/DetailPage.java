@@ -144,7 +144,6 @@ public class DetailPage extends JFrame {			//상세화면
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				bp.BoardDelete(board_proid, login_custid);
-				dispose();
 			}
 		});
 		

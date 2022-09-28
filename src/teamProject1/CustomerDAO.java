@@ -60,7 +60,7 @@ public class CustomerDAO {
 	}
 	
 	//아이디 중복성 확인 메소드
-	public void confirm_id(CustomerVO CustomerVO) {
+	public boolean confirm_id(CustomerVO CustomerVO) {
 		String sql = "select custid from customer where custid = ?";
 		boolean signUp_Flag = true;
 		try {
@@ -81,7 +81,6 @@ public class CustomerDAO {
             }
             if(signUp_Flag)
                 JOptionPane.showMessageDialog(null, "사용가능한 아이디입니다.");
-            
             else
                 JOptionPane.showMessageDialog(null, "이미 사용중인 아이디입니다.");
             conn.close();
@@ -90,6 +89,7 @@ public class CustomerDAO {
 		}catch (Exception e) {
 			System.out.println("예외발생:"+e.getMessage());
 		}
+		return signUp_Flag;
 	}
 	
 	//로그인 아이디와 비밀번호가 동일한지 확인 

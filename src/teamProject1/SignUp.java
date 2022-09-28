@@ -107,8 +107,8 @@ public class SignUp extends JFrame{			//회원가입 클래스
 				
 				if (Pattern.matches(regex, custId)) {		//소문자와 숫자만 들어있으면 true 반환 아니면 false
 					cv.setCustid(custId);
-					cd.confirm_id(cv);
-					id_Flag = true;
+					if(cd.confirm_id(cv))
+						id_Flag = true;
 				}
 				else
 					JOptionPane.showMessageDialog(null, "적합하지 않습니다. 소문자와 숫자를 조합해서 만들어주세요");
