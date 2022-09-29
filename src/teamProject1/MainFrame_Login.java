@@ -29,7 +29,6 @@ public class MainFrame_Login extends JFrame {			//로그인시 보여지는 메�
 	BoardProduct bp = new BoardProduct();
 	ProductDAO ProductDAO = new ProductDAO();
 	JTable jta;
-	
 
 	public MainFrame_Login(String login_custid) {
 		JButton btn_logout = new JButton("로그아웃");

@@ -171,8 +171,6 @@ public class ProductDAO {
 		vector.clear();
 		
 		String categoryname = cv.getCategoryname();
-		System.out.println(categoryname);
-		System.out.println(search_name);
 		String sql;
 		if (categoryname.equals("all")){
 			sql = "select p.proid, p.custid, categoryname, title, price, boarddate, count(cat.proid)"
